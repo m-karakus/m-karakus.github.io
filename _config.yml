@@ -13,14 +13,14 @@ permalink: /:title/
 
 # Authors
 authors:
-  sal:
+  m-karakus:
     name: Metin Karakus
     display_name: Metin Karakus
     gravatar: metinkarakus
     email: metin_karakus@yahoo.com
-    web: https://www.wowthemes.net
-    twitter: https://twitter.com/wowthemesnet
-    description: "Author of Mediumish, a Bootstrap Medium styled template available for WordPress, HTML, Ghost and Jekyll. You are currently previewing Jekyll template demo."
+    web: https://bit.ly/m/metinkarakus
+    twitter: https://twitter.com/m3tin_k
+    description: "Data Professional - Talks about #data #bigdata #visualization #ai"
 
 # Plugins
 plugins:
