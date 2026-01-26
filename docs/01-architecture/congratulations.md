@@ -8,7 +8,6 @@ You have just learned the **basics of Docusaurus** and made some changes to the 
 
 Docusaurus has **much more to offer**!
 
-Have **5 more minutes**? Take a look at **[versioning](../docs-extras/manage-docs-versions.md)** and **[i18n](../docs-extras/translate-your-site.md)**.
 
 Anything **unclear** or **buggy** in this docs? [Please report it!](https://github.com/m-karakus/m-karakus.github.io/discussions/4610)
 
