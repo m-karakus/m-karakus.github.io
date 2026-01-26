@@ -4,24 +4,24 @@ import Link from '@docusaurus/Link';
 
 const items = [
   {
-    title: 'Power BI Incremental Refresh – Production Notes',
+    title: 'Power BI Incremental Refresh — Production Notes',
     description:
-      'Incremental refresh hangi senaryolarda çalışmaz, gerçek hayatta nerede patlar?',
-    link: '/docs/platforms/clickhouse',
+      'Where incremental refresh breaks down, common pitfalls, and lessons learned from real-world implementations.',
+    link: '/blog/powerbi-incremental-refresh',
     badge: 'Blog',
   },
   {
     title: 'ClickHouse for Analytics at Scale',
     description:
-      'On-prem ve cloud senaryolarında ClickHouse mimarisi ve performans notları.',
+      'Architecture patterns, performance considerations, and operational notes for both on-prem and cloud deployments.',
     link: '/docs/platforms/clickhouse',
     badge: 'Docs',
   },
   {
     title: 'Designing Modern Data Platforms',
     description:
-      'dbt, Dagster, Snowflake ve BI katmanını birlikte düşünen mimari yaklaşım.',
-    link: '/docs/platforms/clickhouse',
+      'An architectural approach that brings together dbt, Dagster, Snowflake, and the BI layer as a single system.',
+    link: '/docs/architecture/modern-data-platforms',
     badge: 'Docs',
   },
 ];
@@ -32,7 +32,7 @@ export default function FeaturedKnowledge() {
       <div className="container">
         <h2 className={styles.title}>Featured Knowledge</h2>
         <p className={styles.subtitle}>
-          Selected production notes and engineering learnings.
+          Selected production notes, architectural decisions, and engineering learnings.
         </p>
 
         <div className={styles.grid}>
@@ -41,6 +41,7 @@ export default function FeaturedKnowledge() {
               <div className={styles.badge}>{item.badge}</div>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
+              <span className={styles.cta}>Read more →</span>
             </Link>
           ))}
         </div>

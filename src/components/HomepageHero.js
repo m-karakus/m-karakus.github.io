@@ -6,13 +6,13 @@ export default function HomepageHero() {
     <header className="hero hero--primary homepage-hero">
       <div className="container">
         <h1 className="hero__title">
-          Gerçek dünyada çalışan data mimarileri ve mühendislik notları.
+          Real-world data architectures & engineering notes.
         </h1>
 
         <p className="hero__subtitle">
-          Kurumsal ölçekte projelerde edindiğim
-          <b> modern data platformu, DWH</b> ve <b>analitik sistem</b> deneyimlerinden
-          pratik notlar ve mimari kararlar.
+          Practical insights and architectural decisions from building
+          <b> modern data platforms</b>, <b>data warehouses</b>, and
+          <b> analytics systems</b> in production at scale.
         </p>
 
         <div className="hero-buttons">
