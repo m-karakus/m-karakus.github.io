@@ -49,7 +49,8 @@ import Layout from "@theme/Layout";
 import HomepageHero from "@site/src/components/HomepageHero";
 import FeatureGrid from "@site/src/components/FeatureGrid";
 import { KnowledgeBaseSection } from "@site/src/components/KnowledgeBaseSection";
-import { FeaturedVideos } from "@site/src/components/FeaturedVideos";
+import FeaturedKnowledge from "@site/src/components/FeaturedKnowledge";
+
 
 export default function Home() {
   return (
@@ -62,7 +63,7 @@ export default function Home() {
       <main>
         <FeatureGrid />
         <KnowledgeBaseSection />
-        <FeaturedVideos />
+        <FeaturedKnowledge />
       </main>
     </Layout>
   );
