@@ -7,7 +7,7 @@ const items = [
     title: 'Power BI Incremental Refresh – Production Notes',
     description:
       'Incremental refresh hangi senaryolarda çalışmaz, gerçek hayatta nerede patlar?',
-    link: '/blog/powerbi-incremental-refresh',
+    link: '/docs/platforms/clickhouse',
     badge: 'Blog',
   },
   {
@@ -21,7 +21,7 @@ const items = [
     title: 'Designing Modern Data Platforms',
     description:
       'dbt, Dagster, Snowflake ve BI katmanını birlikte düşünen mimari yaklaşım.',
-    link: '/docs/architecture/modern-data-platform',
+    link: '/docs/platforms/clickhouse',
     badge: 'Docs',
   },
 ];
