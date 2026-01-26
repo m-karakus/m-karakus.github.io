@@ -9,10 +9,10 @@ const features = [
     to: "/docs/category/architectures",
   },
   {
-    title: "Data Engineering",
+    title: "Data Engineering Case Studies",
     description:
       "Batch & streaming pipelines, dbt, Spark, Snowflake, ClickHouse.",
-    to: "/docs/category/data-engineering",
+    to: "/docs/category/case-studies",
   },
   {
     title: "Analytics & Power BI",
