@@ -4,13 +4,6 @@ import Link from '@docusaurus/Link';
 
 const items = [
   {
-    title: 'Power BI Incremental Refresh — Production Notes',
-    description:
-      'Where incremental refresh breaks down, common pitfalls, and lessons learned from real-world implementations.',
-    link: '/blog/powerbi-incremental-refresh',
-    badge: 'Blog',
-  },
-  {
     title: 'ClickHouse for Analytics at Scale',
     description:
       'Architecture patterns, performance considerations, and operational notes for both on-prem and cloud deployments.',
@@ -21,8 +14,15 @@ const items = [
     title: 'Designing Modern Data Platforms',
     description:
       'An architectural approach that brings together dbt, Dagster, Snowflake, and the BI layer as a single system.',
-    link: '/docs/architecture/modern-data-platforms',
+    link: '/docs/platforms/clickhouse',
     badge: 'Docs',
+  },
+  {
+    title: 'Power BI Incremental Refresh — Production Notes',
+    description:
+      'Where incremental refresh breaks down, common pitfalls, and lessons learned from real-world implementations.',
+    link: '/blog/welcome',
+    badge: 'Blog',
   },
 ];
 
