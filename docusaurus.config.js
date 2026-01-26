@@ -97,6 +97,7 @@ const config = {
             label: 'Docs',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/about', label: 'About', position: 'right'},
           {
             href: 'https://github.com/m-karakus/m-karakus.github.io',
             position: 'right',
@@ -113,7 +114,7 @@ const config = {
             items: [
               {
                 label: 'Docs',
-                to: '/docs/intro',
+                to: '/docs',
               },
             ],
           },
