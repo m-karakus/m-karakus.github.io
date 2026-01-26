@@ -84,7 +84,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Metin Karakus',
+        title: 'Home',
         logo: {
           alt: 'logo',
           src: 'img/logo.svg',
