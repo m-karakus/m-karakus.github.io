@@ -2,7 +2,7 @@
 slug: first-blog-post
 title: First Blog Post
 authors: [metin]
-tags: [hola, docusaurus]
+tags: [ai]
 level: advanced
 ---
 
