@@ -1,25 +1,13 @@
-yangshun:
-  name: Yangshun Tay
-  title: Ex-Meta Staff Engineer, Co-founder GreatFrontEnd
-  url: https://linkedin.com/in/yangshun
-  image_url: https://github.com/yangshun.png
+metin:
+  name: Metin Karakus
+  title: Data Professional
+  image_url: https://github.com/m-karakus.png
+  url: https://linkedin.com/in/metin-karakus-b586b6132
   page: true
+    #permalink: '/all-metin-karakus-articles'
   socials:
-    x: yangshunz
-    linkedin: yangshun
-    github: yangshun
-    newsletter: https://www.greatfrontend.com
-
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
-  page:
-    # customize the url of the author page at /blog/authors/<permalink>
-    permalink: '/all-sebastien-lorber-articles'
-  socials:
-    x: sebastienlorber
-    linkedin: sebastienlorber
-    github: slorber
-    newsletter: https://thisweekinreact.com
+    youtube: metin-karakus
+    github: m-karakus
+    linkedin: metin-karakus-b586b6132
+    email: metin_karakus@yahoo.com
+    newsletter: https://gravatar.com/metinkarakus
