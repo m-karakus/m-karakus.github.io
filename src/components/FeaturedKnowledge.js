@@ -21,7 +21,7 @@ const items = [
     title: 'Power BI Incremental Refresh — Production Notes',
     description:
       'Where incremental refresh breaks down, common pitfalls, and lessons learned from real-world implementations.',
-    link: '/blog/welcome',
+    link: '/blog/development-containers',
     badge: 'Blog',
   },
 ];
