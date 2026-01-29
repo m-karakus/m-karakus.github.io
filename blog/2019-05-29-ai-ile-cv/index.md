@@ -1,7 +1,8 @@
 ---
-slug: ai-ile-cv
 title: Yapay Zeka ile Nasıl Güncel Bir CV Oluşturulur?
-authors: metin 
+displayText: Data Architecture
+slug: ai-ile-cv
+authors: [metin] 
 tags: [ai]
 ---
 

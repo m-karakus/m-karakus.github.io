@@ -3,7 +3,7 @@ id: data-architecture
 title: Lakehouse, Warehouse, DWH Structure
 displayText: How we structure our projects
 sidebar_position: 1
-tags: [ai]
+tags: [dwh,data]
 ---
 
 # Lakehouse - Warehouse + dbt Norms & Standards

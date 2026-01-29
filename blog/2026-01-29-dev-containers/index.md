@@ -1,7 +1,8 @@
 ---
-slug: ai-ile-cv
-title: Yapay Zeka ile Nasıl Güncel Bir CV Oluşturulur?
-authors: metin 
+title: Dev Containers ile Hızlı Şekilde Development Environment Nasıl Oluşturulur?
+description: Vscode ve dev containers kullanarak dev ortamı oluşturmak.
+slug: development-containers
+authors: [metin] 
 tags: [ai]
 ---
 

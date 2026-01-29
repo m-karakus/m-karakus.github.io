@@ -1,5 +1,9 @@
-ai:
-  label: Artifical Intelligence
-  permalink: /ai
-  description: Contents about ai...
+dwh:
+  label: dwh
+  permalink: /dwh
+  description: Contents about dwh...
 
+data:
+  label: data
+  permalink: /data
+  description: Contents about data...
