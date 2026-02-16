@@ -14,9 +14,6 @@ export default function SocialLinks() {
       <Link className={styles.button} href="https://www.linkedin.com/in/metin-karakus-b586b6132">
         LinkedIn
       </Link>
-      <Link className={styles.button} href="https://www.dropbox.com/scl/fi/979tf7f3ipfjc56sg7q0n/metin_karakus_cv.pdf?rlkey=fr4ix6f8htqopxkbtf3ps4259&st=wvyxd4mc&dl">
-        CV (PDF)
-      </Link>
       <Link className={styles.button} href="mailto:metin_karakus@yahoo.com">
         Email
       </Link>

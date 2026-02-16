@@ -1,0 +1,108 @@
+/* ── CV Header ── */
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--ifm-color-primary);
+}
+
+/* Photo + Name row */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.name {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--ifm-color-content-secondary);
+  margin: 0;
+  text-align: left;
+}
+
+/* Contact + Social button row — matches SocialLinks style */
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.button {
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+/* Download PDF button accent */
+
+.pdfButton {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.pdfButton:hover {
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 600px) {
+  .top {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .name,
+  .title {
+    text-align: center;
+  }
+
+  .photo {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ── Print ── */
+
+@media print {
+  .pdfButton {
+    display: none;
+  }
+}

@@ -2,7 +2,6 @@
 id: data-architecture
 title: Lakehouse, Warehouse, DWH Structure
 displayText: How we structure our projects
-sidebar_position: 1
 tags: [dwh,data]
 ---
 

@@ -98,3 +98,20 @@
 .feature-link:hover {
   text-decoration: underline;
 }
+
+/* =========================
+   Print — hide chrome for clean PDF export
+   ========================= */
+
+@media print {
+  .navbar,
+  .footer,
+  .theme-doc-sidebar-container,
+  .pagination-nav {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    padding: 0 !important;
+  }
+}

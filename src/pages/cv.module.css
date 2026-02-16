@@ -1,0 +1,20 @@
+/* CV Page Styles — minimal overrides, content is plain markdown */
+
+.cv {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Print ── */
+
+@media print {
+  .cv {
+    max-width: 100%;
+    padding: 0;
+    font-size: 0.85rem;
+  }
+}
