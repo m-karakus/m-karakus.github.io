@@ -14,7 +14,7 @@ export default function SocialLinks() {
       <Link className={styles.button} href="https://www.linkedin.com/in/metin-karakus-b586b6132">
         LinkedIn
       </Link>
-      <Link className={styles.button} href="mailto:metin_karakus@yahoo.com">
+      <Link className={styles.button} href="mailto:s.metinkarakus@gmail.com">
         Email
       </Link>
     </div>

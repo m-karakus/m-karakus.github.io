@@ -20,7 +20,7 @@ export default function CvHeader() {
       </div>
 
       <div className={styles.links}>
-        <Link className={styles.button} href="mailto:metin_karakus@yahoo.com">
+        <Link className={styles.button} href="mailto:s.metinkarakus@gmail.com">
           Email
         </Link>
         <Link className={styles.button} href="tel:+905059909371">
