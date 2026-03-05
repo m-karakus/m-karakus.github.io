@@ -1,5 +1,24 @@
 ai:
-  label: Artifical Intelligence
+  label: Artificial Intelligence
   permalink: /ai
   description: Contents about ai...
 
+devtools:
+  label: Dev Tools
+  permalink: /devtools
+  description: Geliştirme araçları ve ortam kurulumu
+
+containers:
+  label: Containers
+  permalink: /containers
+  description: Docker ve container teknolojileri
+
+docker:
+  label: Docker
+  permalink: /docker
+  description: Docker, image ve container yönetimi
+
+vibe-coding:
+  label: Vibe Coding
+  permalink: /vibe-coding
+  description: AI destekli geliştirme yaklaşımları ve araçları
