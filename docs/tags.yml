@@ -1,9 +1,84 @@
 dwh:
-  label: dwh
+  label: DWH
   permalink: /dwh
-  description: Contents about dwh...
+  description: Data warehouse architecture and standards
 
 data:
-  label: data
+  label: Data
   permalink: /data
-  description: Contents about data...
+  description: General data engineering topics
+
+analytics:
+  label: Analytics
+  permalink: /analytics
+  description: Analytics design, metrics, and BI topics
+
+metrics:
+  label: Metrics
+  permalink: /metrics
+  description: Metric definition and design principles
+
+powerbi:
+  label: Power BI
+  permalink: /powerbi
+  description: Power BI architecture, modeling, and performance
+
+clickhouse:
+  label: ClickHouse
+  permalink: /clickhouse
+  description: ClickHouse setup, optimization, and migration
+
+snowflake:
+  label: Snowflake
+  permalink: /snowflake
+  description: Snowflake cost optimization and performance
+
+performance:
+  label: Performance
+  permalink: /performance
+  description: Query and platform performance tuning
+
+data-modeling:
+  label: Data Modeling
+  permalink: /data-modeling
+  description: Dimensional modeling, fact tables, and SCD patterns
+
+dimensional:
+  label: Dimensional
+  permalink: /dimensional
+  description: Dimensional modeling techniques
+
+tooling:
+  label: Tooling
+  permalink: /tooling
+  description: Data tooling including dbt, ClickHouse, and Power BI
+
+dbt:
+  label: dbt
+  permalink: /dbt
+  description: dbt project structure, testing, and best practices
+
+testing:
+  label: Testing
+  permalink: /testing
+  description: Data quality testing strategies
+
+case-study:
+  label: Case Study
+  permalink: /case-study
+  description: Real-world implementation case studies
+
+migration:
+  label: Migration
+  permalink: /migration
+  description: Database and platform migration guides
+
+platforms:
+  label: Platforms
+  permalink: /platforms
+  description: Data platform overviews and comparisons
+
+cloud:
+  label: Cloud
+  permalink: /cloud
+  description: Cloud infrastructure and cost management
