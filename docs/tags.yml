@@ -82,3 +82,38 @@ cloud:
   label: Cloud
   permalink: /cloud
   description: Cloud infrastructure and cost management
+
+architecture:
+  label: Architecture
+  permalink: /architecture
+  description: Data platform architecture patterns and decisions
+
+semantic-layer:
+  label: Semantic Layer
+  permalink: /semantic-layer
+  description: Semantic layer design and metric governance
+
+onprem:
+  label: On-Premise
+  permalink: /onprem
+  description: On-premise data platform deployment
+
+kubernetes:
+  label: Kubernetes
+  permalink: /kubernetes
+  description: Kubernetes for data platform workloads
+
+data-platform:
+  label: Data Platform
+  permalink: /data-platform
+  description: Modern data platform design and tooling
+
+fact-table:
+  label: Fact Table
+  permalink: /fact-table
+  description: Fact table design patterns
+
+scd:
+  label: SCD
+  permalink: /scd
+  description: Slowly changing dimension strategies

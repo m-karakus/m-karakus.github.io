@@ -7,14 +7,14 @@ const items = [
     title: 'ClickHouse for Analytics at Scale',
     description:
       'Architecture patterns, performance considerations, and operational notes for both on-prem and cloud deployments.',
-    link: '/docs/platforms/clickhouse',
+    link: '/docs/platforms/clickhouse-platform',
     badge: 'Docs',
   },
   {
     title: 'Designing Modern Data Platforms',
     description:
       'An architectural approach that brings together dbt, Dagster, Snowflake, and the BI layer as a single system.',
-    link: '/docs/platforms/clickhouse',
+    link: '/docs/architecture/data-architecture',
     badge: 'Docs',
   },
   {
