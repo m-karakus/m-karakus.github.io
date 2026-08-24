@@ -9,6 +9,29 @@
   color: var(--ifm-font-color-base);
 }
 
+/* ── At-a-glance highlights (recruiter scan targets) ── */
+
+/* Key metrics — measurable impact */
+.metric {
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.3rem;
+  background: var(--ifm-color-primary-contrast-background);
+  color: var(--ifm-color-primary-darker);
+  font-weight: 600;
+  white-space: nowrap;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Employment dates */
+.dates {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--ifm-color-primary-darker);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
 /* ── Print ── */
 
 @media print {
