@@ -12,7 +12,7 @@ import CvHeader from '@site/src/components/CvHeader';
 
 ## Professional Summary
 
-Data Engineering Team Lead with experience designing and delivering cloud-native data platforms on AWS, GCP and Azure. Proven ability to build scalable Data Warehouse architectures, lead high-performing engineering teams, and drive platform modernisation initiatives across multi-cloud environments. Deep expertise in ELT/ETL pipeline development, data governance, and performance optimisation, with a track record of translating business requirements into reliable, cost-efficient data solutions at scale.
+Data Engineering Team Lead with experience designing and delivering cloud-native data platforms on AWS, GCP and Azure. Proven ability to build scalable Data Warehouse architectures, lead high-performing engineering teams, and drive platform modernisation initiatives across multi-cloud environments. Deep expertise in ELT/ETL pipeline development, data governance, and performance optimisation, with a track record of translating business requirements into reliable, cost-efficient data solutions at scale. Author of **mkpipe**, an open-source PySpark ETL framework published on PyPI.
 
 ---
 
@@ -20,9 +20,9 @@ Data Engineering Team Lead with experience designing and delivering cloud-native
 
 | Category                  | Technologies                                                                                                        |
 | :------------------------ | :------------------------------------------------------------------------------------------------------------------ |
-| **Cloud**                 | AWS, Azure, GCP, DigitalOcean, Terraform, Kubernetes, Docker                                                        |
-| **Data&nbsp;Engineering** | Python, PySpark, Scala, dbt, Dagster, Airflow, Airbyte, Kafka, AWS Glue, Azure Databricks                           |
-| **Data Stores**           | PostgreSQL, MSSQL, MySQL, Oracle, MongoDB, Redis, Cassandra, Elasticsearch, BigQuery, Redshift, HDFS, Parquet, Avro |
+| **Cloud**                 | AWS, Azure, GCP, DigitalOcean, Terraform, Terragrunt, Kubernetes, Docker, Ansible, Helm, ArgoCD                      |
+| **Data&nbsp;Engineering** | Python, PySpark, Scala, dbt, Dagster, Airflow, Airbyte, Kafka, Flink, AWS Glue, Azure Databricks, FastAPI           |
+| **Data Stores**           | PostgreSQL, MSSQL, MySQL, Oracle, MongoDB, Redis, Cassandra, Elasticsearch, Weaviate, BigQuery, Redshift, ClickHouse, DuckDB, Snowflake, HDFS, Parquet, Avro |
 | **Analytics & BI**        | Power BI, Tableau, Looker, Lightdash, Google Data Studio                                                            |
 | **Languages**             | Python, SQL, JavaScript, TypeScript, Scala, R, C#                                                                   |
 | **Other**                 | CI/CD, Microservices, REST APIs, Data Streaming, Django, Node.js, React.js, .NET                                    |
@@ -37,11 +37,13 @@ Data Engineering Team Lead with experience designing and delivering cloud-native
 
 - Lead a team of data engineers delivering enterprise-scale Data Warehouse and analytics platforms for telecom and enterprise customers
 - Architect multi-cloud data infrastructure using **AWS (Redshift, S3, Glue)** and **Azure (ADF, Databricks, Synapse)**
-- Design modern ELT pipelines with Python, PySpark, dbt, and orchestration tooling
-- Implement data governance frameworks covering data quality monitoring and documentation standards
-- Drive cost optimisation across cloud infrastructure, significantly reducing operational spend
-- Establish CI/CD practices and engineering standards for data platform development
-- **Key tech:** AWS, Azure, Python, PySpark, dbt, Databricks, Redshift, Glue, SQL, Kubernetes
+- Design modern ELT pipelines with Python, PySpark, dbt, and Dagster
+- Manage infrastructure as code with Terraform/Terragrunt across dev/staging/prod, deployed through tag-triggered Jenkins pipelines
+- Deliver streaming ingestion with Apache Flink and Spark-based churn-scoring models on a Snowflake DWH
+- Built **HERMES**, a 24/7 autonomous AI agent that runs the team's workflows end-to-end -- analysis, dbt/ETL development, incident diagnosis, deploys -- across 4 AWS accounts via SSM (no static keys), with git-versioned memory, self-generated skills, and approval gates
+- Exposed the DWH as versioned REST APIs (billing, data-usage, and account-balance inquiries) consumed by BSS systems across dev-to-prod environments
+- Implement data governance and CI/CD practices for the platform, driving down cloud operational spend
+- **Key tech:** AWS, Azure, Python, PySpark, dbt, Dagster, Databricks, Redshift, Glue, Terraform, Flink, Snowflake, SQL, Kubernetes, LLM Agents
 
 ### Data Scientist & ML/Deep Learning Manager -- Team Lead
 
@@ -51,8 +53,8 @@ Data Engineering Team Lead with experience designing and delivering cloud-native
 - Created a single source of truth with dbt, reducing pipeline troubleshooting time by <span className={styles.metric}>80%</span>
 - Optimised API workloads with dbt and Dagster, cutting monthly cloud costs from <span className={styles.metric}>EUR 10K → EUR 700</span>
 - Automated 90% of recurring reports using Airbyte, Airflow, cron jobs, and custom bots
-- Delivered analytics and reporting with Lightdash, Looker, and Power BI
-- Operated across Azure (Data Lake, Data Factory, Databricks) and GCP (BigQuery); used Kafka, PySpark, and Apache Beam daily
+- Built a competitor price-intelligence pipeline ingesting hotel-market rates (PySpark, Dask, polars over GCS/Parquet) to power dynamic pricing decisions
+- Delivered analytics with Lightdash, Looker, and Power BI across Azure (Data Lake, Data Factory, Databricks) and GCP (BigQuery), using Kafka, PySpark, and Apache Beam daily
 - **Key tech:** Python, dbt, Dagster, Airbyte, Airflow, GCP, Azure, BigQuery, Power BI
 
 ### Data Scientist / ML & AI Engineer / Analytics Manager
@@ -61,16 +63,16 @@ Data Engineering Team Lead with experience designing and delivering cloud-native
 
 - Owned all data collection, processing, and analytics for a top Turkish social media platform (50+ employees)
 - Led development of a custom Data Management Platform using Google Tag Manager, custom JavaScript, and streaming pipelines (Kafka, Spark, Elasticsearch, BigQuery)
+- Operated 30+ services on Kubernetes, including 11 production AI microservices (sentiment, spam/URL, nudity detection, topic suggestion) with hybrid search powered by Elasticsearch and Weaviate
 - Built a Turkish text sentiment classifier (4 categories) using Keras and TensorFlow -- [project](https://github.com/m-karakus/ai-tensorflow-classification)
 - Developed an AI-powered log anomaly detection system with scikit-learn -- [project](https://github.com/m-karakus/OSAS)
-- Containerised and orchestrated applications with Docker and Kubernetes
 - **Key tech:** Python, Kafka, Spark, TensorFlow, Docker, Kubernetes, Elasticsearch, BigQuery, dbt, Azure
 
 ### Data Engineer
 
 **LCWaikiki** · Istanbul · <span className={styles.dates}>2020 – 2021</span>
 
-- Designed algorithms to model user behaviour and improve planning processes
+- Designed optimisation algorithms for job-shop scheduling and cutting/line planning, combining ML models with mathematical programming to model user behaviour
 - Increased plan realisation rate from <span className={styles.metric}>40% → 85%</span> and halved planning time
 - **Key tech:** Python, AWS, LightGBM, Pyomo, OR-Tools
 
@@ -81,6 +83,28 @@ Data Engineering Team Lead with experience designing and delivering cloud-native
 - Built automated data collection and monitoring infrastructure for an online book retailer (50+ employees)
 - Implemented tracking with Google Analytics, GTM, Facebook Pixel; delivered dashboards in Tableau and Data Studio
 - **Key tech:** Python, SQL, JavaScript, Google Analytics, GTM, Tableau, BigQuery
+
+---
+
+## Projects & Freelance Work
+
+### Open Source
+
+- **mkpipe** -- open-source, orchestrator-agnostic ETL framework on PySpark, published on PyPI ([GitHub](https://github.com/mkpipe-etl)): pluggable extractor/loader ecosystem (18 extractors + 18 loaders, incl. Postgres, ClickHouse, BigQuery, Snowflake, DynamoDB) driven by a single YAML config, with incremental replication and idempotent upserts
+- **veri-bilimi-kursu** -- open Turkish data-science curriculum covering SQL, Python, ETL (Airflow, Dagster, Airbyte), PySpark, and BI, with video tutorials and 20+ contributors ([GitHub](https://github.com/m-karakus/veri-bilimi-kursu))
+
+### Freelance & Consulting
+
+- **EuMAR / eFertility analytics platform** -- end-to-end DWH for a fertility-software suite: production Kubernetes cluster on AWS EC2 built from scratch with Ansible, ClickHouse via the Altinity operator (Helm, ArgoCD), PostgreSQL→ClickHouse ETL with mkpipe, 338 dbt models, and a FastAPI Power BI embedding service with row-level security
+- **GlobaSteer -- Smart Grid Optimization** -- demand-forecasting and outage-prediction ML models with a Power BI decision-support report
+- **KPI Centre** -- conceptual design of a KPI staging layer, data warehouse norms & standards, and reporting-tool evaluation
+- **34con -- IoT tracking suite** -- analytics for cargo and asset-tracking products (GPS beacons, modem fleet, warehouse stock)
+- **KLE -- manufacturing analytics** -- production reporting and device-usage analytics
+
+### Personal
+
+- **project_trading** -- multi-strategy algorithmic trading system on Interactive Brokers: regime-aware strategy selection, inverse-volatility allocation, 6-layer risk management; walk-forward optimisation (Sharpe 2.3 in backtests), 106 tests, one codebase for backtest and live execution
+- **ai-lever** -- 24/7 autonomous agent that scans freelance-marketplace jobs via MCP, scores them with a deterministic fit/EV engine, drafts bids, and submits only after human approval over Telegram
 
 ---
 
@@ -95,10 +119,6 @@ Gazi University, Ankara, Turkey · 2012 -- 2016
 
 - Machine Learning & Deep Learning in Python & R -- Udemy (2021)
 - Google Analytics Individual Qualification -- Google (2021)
-- Google Ads Search Certification -- Google (2021)
-- Campaign Manager 360 Certification -- Google (2021)
-- Google Ads: Search Ad Campaigns -- Udemy (2021)
-- Google Analytics Individual Qualification -- Google (2020)
 
 ---
 
