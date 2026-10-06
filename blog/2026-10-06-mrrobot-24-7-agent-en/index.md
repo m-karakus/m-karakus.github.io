@@ -136,4 +136,8 @@ We are not reinventing the wheel: about 80% of the agent harness is off-the-shel
 
 The system is early in its journey. But the goal is clear: a teammate that takes over the routine entirely, gains a bit more seniority with every task, and stays on call overnight. The process moves step by step, and every phase has a measurable output.
 
-Curious for more? Check the [Turkish post](/blog/mrrobot-7x24-otonom-agent) or the executive one-pagers ([EN](/blog/mrrobot-onepager-en), [TR](/blog/mrrobot-onepager-tr)).
+:::info 📌 Related content
+- 📄 **Executive one-pager:** [English](/blog/mrrobot-onepager-en) · [Türkçe](/blog/mrrobot-onepager-tr)
+- 🇹🇷 **Turkish version of this post:** [MrRobot — 7x24 Çalışan ve Her Görevle Kendini Geliştiren Bir AI Agent](/blog/mrrobot-7x24-otonom-agent)
+- 💬 Questions and feedback: [LinkedIn](https://linkedin.com/in/metin-karakus-b586b6132)
+:::

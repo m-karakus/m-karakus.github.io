@@ -8,6 +8,6 @@ tags: [ai, agent, hermes, data-engineering]
 
 # MrRobot — Executive One-Pager (EN)
 
-Full screen: `/img/onepager-en.html`
+Open full screen: <a href="/img/onepager-en.html" target="_blank">onepager-en.html</a>
 
 <iframe src="/img/onepager-en.html" style={{width:'100%', minHeight:'1200px', border:'1px solid #ddd', borderRadius:'8px'}} title="MrRobot One-Pager (EN)"></iframe>
