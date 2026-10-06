@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MrRobot - Ekip Arkadaşınız Artık Yorulmuyor · CTO Sunumu</title>
+<style>
+  :root{
+    --bg:#0a0e13;
+    --panel:#10161e;
+    --panel2:#141c26;
+    --line:rgba(148,163,184,.16);
+    --line2:rgba(148,163,184,.28);
+    --txt:#e6edf3;
+    --muted:#8b98a9;
+    --dim:#5d6b7d;
+    --accent:#34d399;
+    --accent-dim:rgba(52,211,153,.12);
+    --accent-line:rgba(52,211,153,.35);
+    --blue:#60a5fa;
+    --blue-dim:rgba(96,165,250,.10);
+    --amber:#fbbf24;
+    --amber-dim:rgba(251,191,36,.10);
+    --red:#f87171;
+    --mono:ui-monospace,'SF Mono','Cascadia Code','JetBrains Mono',Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(52,211,153,.25)}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,14,19,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:14px;height:52px}
+  .brand{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--accent)}
+  .brand .path{color:var(--dim);font-weight:400}
+  .topbar nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+  .topbar a{
+    color:var(--muted);text-decoration:none;font-size:12.5px;padding:5px 10px;border-radius:6px;
+    transition:.15s;
+  }
+  .topbar a:hover{color:var(--txt);background:rgba(148,163,184,.1)}
+
+  /* ---------- hero ---------- */
+  header.hero{padding:84px 0 60px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  header.hero::before{
+    content:'';position:absolute;inset:-20%;
+    background:
+      radial-gradient(700px 300px at 15% 0%,rgba(52,211,153,.09),transparent 60%),
+      radial-gradient(600px 260px at 85% 20%,rgba(96,165,250,.07),transparent 60%);
+    pointer-events:none;
+    animation:drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%{transform:translate(0,0) scale(1)}
+    100%{transform:translate(40px,-24px) scale(1.06)}
+  }
+  .hero .wrap{position:relative}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-line);
+    padding:5px 14px;border-radius:999px;margin-bottom:22px;
+  }
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 4px var(--accent)}50%{box-shadow:0 0 16px var(--accent)}}
+  h1{font-size:44px;line-height:1.12;font-weight:800;letter-spacing:-.025em;margin-bottom:16px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .sub{font-size:18px;color:var(--muted);max-width:800px;line-height:1.6}
+  .sub strong{color:var(--txt);font-weight:600}
+  .hero-meta{display:flex;gap:26px;margin-top:36px;flex-wrap:wrap}
+  .hm{border-left:2px solid var(--accent-line);padding-left:14px}
+  .hm .k{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:2px}
+  .hm .v{font-family:var(--mono);font-size:13px;color:var(--txt)}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:34px}
+  .sec-num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.15em;margin-bottom:8px}
+  h2{font-size:27px;font-weight:750;letter-spacing:-.01em;margin-bottom:8px}
+  .sec-lede{color:var(--muted);font-size:15.5px;max-width:820px}
+  .sec-lede strong{color:var(--txt)}
+
+  /* one-sentence banner */
+  .intent{
+    background:linear-gradient(135deg,var(--accent-dim),transparent 65%);
+    border:1px solid var(--accent-line);border-radius:14px;
+    padding:26px 30px;display:flex;gap:20px;align-items:flex-start;
+  }
+  .intent .q{font-size:30px;line-height:1;color:var(--accent);font-family:var(--mono)}
+  .intent p{font-size:17px;line-height:1.65}
+  .intent p strong{color:var(--accent)}
+
+  /* before/after strip */
+  .ba{display:grid;grid-template-columns:1fr 44px 1fr;gap:0;margin-top:26px;align-items:stretch}
+  .ba-col{border-radius:12px;padding:20px 24px;border:1px solid var(--line)}
+  .ba-col.today{background:var(--panel);border-color:var(--line2)}
+  .ba-col.tmrw{background:linear-gradient(160deg,rgba(52,211,153,.08),var(--panel));border-color:var(--accent-line)}
+  .ba-col h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+  .ba-col.today h4{color:var(--dim)}
+  .ba-col.tmrw h4{color:var(--accent)}
+  .ba-col ul{list-style:none}
+  .ba-col li{padding:6px 0 6px 26px;position:relative;color:var(--muted);font-size:14px}
+  .ba-col.tmrw li{color:var(--txt)}
+  .ba-col li::before{position:absolute;left:2px;font-family:var(--mono)}
+  .ba-col.today li::before{content:'✕';color:var(--red);font-size:12px;top:8px}
+  .ba-col.tmrw li::before{content:'✓';color:var(--accent);font-size:12px;top:8px}
+  .ba-arrow{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:20px}
+
+  /* ---------- LIVE SCENE / chat ---------- */
+  .scene-wrap{display:grid;grid-template-columns:1fr .72fr;gap:26px;align-items:start}
+  .chat{
+    border:1px solid var(--line2);border-radius:16px;background:var(--panel);
+    overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.4);
+  }
+  .chat-head{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel2);
+  }
+  .chat-app{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .chat-app .cdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px;animation:pulse 2s infinite;vertical-align:1px}
+  .chat-live{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
+  .chat-body{padding:20px 18px;display:flex;flex-direction:column;gap:14px}
+  .chat-time{
+    font-family:var(--mono);font-size:10.5px;color:var(--dim);text-align:center;letter-spacing:.1em;
+  }
+  .chat-time span{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+  .msg{display:flex;gap:11px;max-width:94%}
+  .msg.me{align-self:flex-end;flex-direction:row-reverse}
+  .avatar{
+    width:32px;height:32px;border-radius:9px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:13px;font-weight:700;margin-top:2px;
+  }
+  .avatar.h{background:var(--accent-dim);border:1px solid var(--accent-line);color:var(--accent)}
+  .avatar.m{background:var(--blue-dim);border:1px solid rgba(96,165,250,.35);color:var(--blue)}
+  .avatar.s{background:var(--amber-dim);border:1px solid rgba(251,191,36,.35);color:var(--amber)}
+  .bubble{
+    border:1px solid var(--line);border-radius:12px;background:var(--panel2);
+    padding:11px 15px;font-size:13.3px;
+  }
+  .msg.me .bubble{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.25)}
+  .bubble .who{
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .msg .who b{color:var(--accent);font-size:10.5px}
+  .msg.me .who b{color:var(--blue)}
+  .tagchip{
+    font-family:var(--mono);font-size:9px;padding:1px 8px;border-radius:5px;
+    background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--amber);
+  }
+  .bubble p{margin-bottom:7px;color:var(--muted)}
+  .bubble p:last-child{margin-bottom:0}
+  .bubble p b{color:var(--txt)}
+  .bubble .code{
+    font-family:var(--mono);font-size:11.5px;color:var(--accent);
+    background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.18);
+    padding:0 5px;border-radius:4px;white-space:nowrap;
+  }
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .steps span{
+    font-family:var(--mono);font-size:10px;color:var(--muted);
+    background:rgba(148,163,184,.08);border:1px solid var(--line);
+    padding:3px 9px;border-radius:6px;
+  }
+  .vpass{
+    font-family:var(--mono);font-size:10.5px;color:var(--accent);
+    background:var(--accent-dim);border:1px solid var(--accent-line);
+    padding:1px 8px;border-radius:5px;white-space:nowrap;
+  }
+  .chat-foot{
+    padding:14px 18px;border-top:1px solid var(--line);
+    background:linear-gradient(90deg,rgba(52,211,153,.07),transparent 70%);
+    font-size:14px;color:var(--muted);text-align:center;
+  }
+  .chat-foot b{color:var(--accent);font-weight:700}
+  .scene-side{display:flex;flex-direction:column;gap:14px}
+  .scene-stat{
+    border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:18px 20px;
+  }
+  .scene-stat .n{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--accent);line-height:1.15}
+  .scene-stat .n span{font-size:14px;color:var(--muted);font-weight:500}
+  .scene-stat p{font-size:12.8px;color:var(--muted);margin-top:6px}
+  .scene-stat.alt .n{color:var(--blue)}
+  .scene-note{
+    border:1px dashed var(--line2);border-radius:13px;padding:16px 18px;
+    font-size:12.8px;color:var(--muted);
+  }
+  .scene-note b{color:var(--txt)}
+
+  /* ---------- comparison table ---------- */
+  .tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13.8px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:13px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl thead th{
+    background:var(--panel2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    border-bottom:1px solid var(--line2);
+  }
+  .tbl thead th.c-us{color:var(--accent)}
+  .tbl thead th.c-them{color:var(--blue)}
+  .tbl td.dim{color:var(--dim);font-weight:600;width:15%;background:rgba(148,163,184,.03)}
+  .tbl td.them{color:var(--muted);background:rgba(96,165,250,.03);width:37%}
+  .tbl td.us{background:rgba(52,211,153,.05);width:48%}
+  .tbl td.us b{color:var(--accent);font-weight:650}
+  .tbl td.them b{color:var(--blue);font-weight:650}
+  .pos-note{
+    margin-top:20px;display:flex;gap:14px;align-items:flex-start;
+    background:var(--blue-dim);border:1px solid rgba(96,165,250,.25);border-radius:12px;padding:18px 22px;
+  }
+  .pos-note .i{font-size:18px;line-height:1.4}
+  .pos-note p{font-size:14px;color:var(--muted)}
+  .pos-note p strong{color:var(--txt)}
+
+  /* ---------- brain ---------- */
+  .brain-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px}
+  .quote-box{
+    border:1px solid var(--accent-line);border-radius:14px;padding:26px 28px;
+    background:linear-gradient(150deg,rgba(52,211,153,.07),var(--panel));
+  }
+  .quote-box .q1{font-size:21px;font-weight:700;line-height:1.35;margin-bottom:14px}
+  .quote-box .q1 em{color:var(--accent);font-style:normal}
+  .quote-box p{color:var(--muted);font-size:14px;margin-bottom:12px}
+  .quote-box p:last-child{margin-bottom:0}
+  .quote-box strong{color:var(--txt)}
+  .layers{display:flex;flex-direction:column;gap:10px}
+  .layer{border:1px solid var(--line);border-radius:11px;padding:14px 18px;background:var(--panel);display:flex;gap:16px;align-items:flex-start}
+  .layer .tag{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 9px;border-radius:6px;white-space:nowrap;margin-top:2px;
+  }
+  .layer.l1 .tag{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-line)}
+  .layer.l2 .tag{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+  .layer.l3 .tag{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+  .layer.l4 .tag{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.3)}
+  .layer h5{font-size:14px;margin-bottom:3px}
+  .layer p{font-size:13px;color:var(--muted)}
+  .layer p b{color:var(--txt)}
+
+  /* self-improving loop */
+  .loop{margin-top:26px;border:1px dashed var(--line2);border-radius:14px;padding:22px 26px}
+  .loop h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .loop ol{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:step}
+  .loop li{
+    counter-increment:step;position:relative;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:14px 12px 12px;font-size:12.5px;color:var(--muted);line-height:1.5;
+  }
+  .loop li::before{
+    content:counter(step);position:absolute;top:-10px;left:10px;
+    font-family:var(--mono);font-size:11px;font-weight:700;
+    background:var(--accent);color:#04110b;width:20px;height:20px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .loop li b{display:block;color:var(--txt);font-size:12.8px;margin-bottom:2px}
+  .loop li:not(:last-child)::after{
+    content:'→';position:absolute;right:-12px;top:40%;color:var(--accent);font-size:13px;z-index:2;
+  }
+
+  /* learning curve */
+  .curve{margin-top:26px;border:1px solid var(--accent-line);border-radius:15px;background:var(--panel);padding:24px 26px 18px}
+  .curve h4{font-size:15.5px;font-weight:700;margin-bottom:2px}
+  .curve .cap{font-size:12.8px;color:var(--muted);margin-bottom:14px}
+  .curve svg{width:100%;height:auto;display:block}
+  .curve .legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;padding-top:12px;border-top:1px solid var(--line)}
+  .curve .legend span{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .lg-line{width:22px;height:3px;border-radius:2px;background:var(--accent)}
+  .lg-dash{width:22px;height:0;border-top:2.5px dashed var(--dim)}
+  .curve .foot{font-size:12.3px;color:var(--dim);margin-top:10px}
+  .curve .foot b{color:var(--accent)}
+
+  /* ---------- scenarios ---------- */
+  .scen-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .scen{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column}
+  .scen-head{padding:16px 20px 13px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+  .scen-head .ico{
+    width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-size:17px;background:var(--accent-dim);border:1px solid var(--accent-line);flex-shrink:0;
+  }
+  .scen-head h4{font-size:15px;font-weight:650}
+  .scen-head .cat{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+  .scen-body{padding:14px 20px 18px;flex:1;display:flex;flex-direction:column;gap:10px}
+  .scen-row{display:grid;grid-template-columns:64px 1fr;gap:12px;font-size:13px}
+  .scen-row .lbl{
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;
+    align-self:flex-start;padding:3px 0;border-radius:5px;margin-top:2px;
+  }
+  .lbl.now{background:rgba(148,163,184,.1);color:var(--dim)}
+  .lbl.goal{background:var(--accent-dim);color:var(--accent)}
+  .scen-row .now-t{color:var(--muted)}
+  .scen-row .goal-t{color:var(--txt)}
+  .scen-row .goal-t b{color:var(--accent);font-weight:650}
+  .scen-foot{
+    margin:auto 20px 18px;padding:9px 14px;border-radius:9px;
+    background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);
+    font-family:var(--mono);font-size:12px;color:var(--accent);
+  }
+  .scen-foot span{color:var(--dim);font-family:var(--sans)}
+
+  /* ---------- architecture ---------- */
+  .arch{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:26px}
+  .arch-flow{display:flex;flex-direction:column;gap:0}
+  .node-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .anode{
+    border-radius:11px;padding:12px 18px;text-align:center;min-width:160px;
+    border:1px solid var(--line2);background:var(--panel2);position:relative;
+  }
+  .anode .t{font-size:13.5px;font-weight:650}
+  .anode .d{font-size:11px;color:var(--dim);margin-top:2px}
+  .anode.trigger{border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.07)}
+  .anode.core{border-color:var(--accent-line);background:linear-gradient(150deg,rgba(52,211,153,.1),var(--panel2));padding:18px 30px;min-width:420px;max-width:660px}
+  .anode.core .t{color:var(--accent);font-size:15px}
+  .anode.core .inner{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .anode.core .chip{
+    font-family:var(--mono);font-size:10.5px;padding:4px 10px;border-radius:6px;
+    background:rgba(52,211,153,.1);border:1px solid var(--accent-line);color:var(--accent);
+  }
+  .anode.target{border-color:var(--line2)}
+  .anode.obs{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05)}
+  .connector{text-align:center;color:var(--accent);font-size:16px;line-height:1;padding:8px 0}
+  .connector .lbl{
+    display:inline-block;font-family:var(--mono);font-size:10.5px;color:var(--muted);
+    background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:3px 12px;margin-left:10px;
+  }
+  .arch-note{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .an{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:var(--panel2);font-size:12.5px;color:var(--muted)}
+  .an b{color:var(--txt);display:block;font-size:12.8px;margin-bottom:2px}
+
+  /* ---------- permissions table ---------- */
+  .perm{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .perm th{background:var(--panel2);text-align:left;padding:11px 16px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line2)}
+  .perm td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  .perm tr:last-child td{border-bottom:none}
+  .perm td:first-child{font-weight:600}
+  .perm td:nth-child(2){color:var(--muted)}
+  .badge{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 10px;border-radius:6px;letter-spacing:.05em;white-space:nowrap}
+  .badge.r{background:rgba(52,211,153,.1);color:var(--accent);border:1px solid var(--accent-line)}
+  .badge.rw{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+  .badge.no{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+  .perm-note{margin-top:14px;font-size:13px;color:var(--muted)}
+  .perm-note b{color:var(--amber)}
+
+  /* ---------- controls ---------- */
+  .ctrl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .ctrl{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:20px}
+  .ctrl .ico{font-size:20px;margin-bottom:10px}
+  .ctrl h4{font-size:14.5px;margin-bottom:8px}
+  .ctrl p{font-size:12.8px;color:var(--muted)}
+  .ctrl p b{color:var(--txt)}
+  .ctrl .snippet{
+    margin-top:12px;font-family:var(--mono);font-size:11px;line-height:1.8;
+    background:#0a0f14;border:1px solid var(--line);border-radius:8px;padding:11px 14px;color:var(--muted);overflow-x:auto;
+  }
+  .snippet .ok{color:var(--accent)}
+  .snippet .bad{color:var(--red)}
+  .snippet .wr{color:var(--amber)}
+
+  /* ---------- roadmap ---------- */
+  .phases{position:relative;padding-left:34px}
+  .phases::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),rgba(52,211,153,.15))}
+  .phase{position:relative;padding:0 0 26px 18px}
+  .phase:last-child{padding-bottom:0}
+  .phase::before{
+    content:'';position:absolute;left:-31px;top:5px;width:16px;height:16px;border-radius:50%;
+    background:var(--panel);border:2px solid var(--accent);z-index:2;
+  }
+  .phase.done::before{background:var(--accent);box-shadow:0 0 12px rgba(52,211,153,.5)}
+  .phase .ph-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase}
+  .phase.done .ph-tag{color:var(--accent)}
+  .phase h4{font-size:15.5px;margin:2px 0 4px}
+  .phase p{font-size:13px;color:var(--muted);max-width:700px}
+  .phase .ph-out{display:inline-block;margin-top:7px;font-size:12px;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-line);border-radius:7px;padding:3px 11px;font-family:var(--mono)}
+  .roadmap-note{
+    margin-top:26px;border:1px dashed var(--line2);border-radius:12px;padding:16px 20px;
+    font-size:13.3px;color:var(--muted);
+  }
+  .roadmap-note b{color:var(--accent)}
+
+  /* ---------- outcomes ---------- */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:26px}
+  .kpi{border:1px solid var(--line);border-radius:13px;padding:22px 20px;background:linear-gradient(160deg,var(--panel),var(--panel2))}
+  .kpi .big{font-size:34px;font-weight:800;letter-spacing:-.02em;color:var(--accent);line-height:1.1;font-variant-numeric:tabular-nums}
+  .kpi .big .suffix{font-size:16px;color:var(--accent);opacity:.75}
+  .kpi .cmp{font-family:var(--mono);font-size:11px;color:var(--dim);margin:6px 0 10px}
+  .kpi p{font-size:12.5px;color:var(--muted)}
+  .gain-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .gain{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:14px 17px;background:var(--panel)}
+  .gain .i{color:var(--accent);font-size:15px;line-height:1.5}
+  .gain p{font-size:13.3px;color:var(--muted)}
+  .gain p b{color:var(--txt);display:block;font-size:13.6px}
+
+  /* ---------- dev gains strip ---------- */
+  .dev-block{margin:32px 0 10px;border:1px solid var(--accent-line);border-radius:16px;background:linear-gradient(160deg,rgba(52,211,153,.07),var(--panel));padding:26px 28px}
+  .dev-block h3{font-size:19px;font-weight:750;margin-bottom:4px}
+  .dev-block .dev-cap{font-size:13.5px;color:var(--muted);margin-bottom:20px}
+  .dev-block .dev-cap strong{color:var(--txt)}
+  .dev-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+  .dstep{border:1px solid var(--line);border-radius:11px;background:var(--panel2);padding:12px 13px;position:relative}
+  .dstep .ds-t{font-size:13px;font-weight:650;margin-bottom:7px;padding-left:24px;position:relative}
+  .dstep .ds-t::before{
+    content:'✓';position:absolute;left:0;top:1px;font-size:11px;color:var(--accent);
+  }
+  .dstep .ds-row{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;margin-top:4px}
+  .dstep .ds-row .was{color:var(--dim)}
+  .dstep .ds-row .now2{color:var(--accent);font-weight:650;font-family:var(--mono)}
+  .dstep .ds-d{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.45}
+  .dstep .ds-d b{color:var(--txt)}
+  .dev-total{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    border-top:1px dashed var(--line2);padding-top:14px;
+  }
+  .dev-total .dt-lbl{font-size:13px;color:var(--muted)}
+  .dev-total .dt-lbl b{color:var(--txt)}
+  .dev-total .dt-nums{display:flex;align-items:center;gap:10px;font-family:var(--mono)}
+  .dev-total .dt-old{font-size:13px;color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(248,113,113,.6)}
+  .dev-total .dt-arrow{color:var(--accent)}
+  .dev-total .dt-new{font-size:20px;font-weight:800;color:var(--accent)}
+  .dev-gains{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  .dg{border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:var(--panel)}
+  .dg .dg-i{font-size:15px;margin-bottom:6px}
+  .dg p{font-size:12.7px;color:var(--muted)}
+  .dg p b{color:var(--txt);display:block;font-size:13.2px;margin-bottom:2px}
+
+  /* ---------- why now ---------- */
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .why{border:1px solid var(--accent-line);border-radius:14px;padding:24px 22px;background:linear-gradient(160deg,rgba(52,211,153,.06),var(--panel))}
+  .why .wn{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;margin-bottom:10px}
+  .why h4{font-size:16.5px;margin-bottom:8px;line-height:1.35}
+  .why p{font-size:13.2px;color:var(--muted)}
+  .why p b{color:var(--txt)}
+
+  /* ---------- closing ---------- */
+  .closing{background:
+    radial-gradient(600px 240px at 20% 0%,rgba(52,211,153,.09),transparent 60%),
+    radial-gradient(500px 220px at 80% 100%,rgba(96,165,250,.06),transparent 60%);
+    border-bottom:none;
+  }
+  .closing .wrap{padding:72px 28px 56px}
+  .closing h2{font-size:32px;margin-bottom:12px;line-height:1.25}
+  .closing h2 em{font-style:normal;color:var(--accent)}
+  .closing .sec-lede{margin-bottom:30px;font-size:16.5px}
+  .close-cards{display:flex;gap:14px;flex-wrap:wrap}
+  .close-card{
+    flex:1;min-width:220px;border:1px solid var(--line2);border-radius:13px;padding:18px 20px;
+    background:var(--panel);
+  }
+  .close-card .ck{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+  .close-card p{font-size:14.5px;font-weight:650}
+  .close-card p span{display:block;font-size:12.5px;color:var(--muted);font-weight:400;margin-top:4px}
+  footer{padding:30px 0;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  footer p{font-size:12.5px;color:var(--dim)}
+  footer .mono{font-family:var(--mono);color:var(--accent)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .brain-grid,.scen-grid,.ctrl-grid,.gain-list,.why-grid,.dev-gains{grid-template-columns:1fr}
+    .scene-wrap{grid-template-columns:1fr}
+    .kpi-grid{grid-template-columns:1fr 1fr}
+    .arch-note{grid-template-columns:1fr}
+    .dev-steps{grid-template-columns:1fr}
+    .loop ol{grid-template-columns:1fr;gap:16px}
+    .loop li:not(:last-child)::after{content:'↓';right:auto;left:16px;top:100%;margin-top:2px}
+    .ba{grid-template-columns:1fr}
+    .ba-arrow{transform:rotate(90deg);padding:8px 0}
+    h1{font-size:31px}
+    .closing h2{font-size:25px}
+    .tbl{font-size:12.5px}
+    .tbl td.dim,.tbl td.them,.tbl td.us{width:auto}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .topbar{display:none}
+    section{page-break-inside:avoid}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAV ============ -->
+<div class="topbar">
+  <div class="wrap">
+    <span class="brand">MrRobot</span>
+    <nav>
+      <a href="#sahne">Canlı Sahne</a>
+      <a href="#fark">Farkımız</a>
+      <a href="#beyin">Beyin</a>
+      <a href="#senaryo">Senaryolar</a>
+      <a href="#mimari">Mimari</a>
+      <a href="#guvenlik">Güvenlik</a>
+      <a href="#kazanc">Kazanç</a>
+      <a href="#simdi">Neden Şimdi</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="pill"><span class="dot"></span> Data Analytics · Ar-Ge · 2026</div>
+    <h1>Yorulmayan, unutmayan, gece gündüz<br>ekibin yanında duran - ve her işten<br><em>öğrenen bir dijital mühendis.</em></h1>
+    <p class="sub">
+      <strong>MrRobot</strong>, data ekibimizin günlük işlerini gece gündüz yapan bir dijital ekip arkadaşıdır.
+      Bir hata olduğunda kimse çağırmadan harekete geçer, çözer ve onayımıza sunar.
+      Öğrendiği her şeyi kalıcı hafızasına kaydeder; her yeni görevle bir öncekinden daha hızlı çalışır.
+      Gelişimini haftalık test skorlarıyla ölçer ve kanıtlar.
+    </p>
+    <div class="hero-meta">
+      <div class="hm"><div class="k">Çalışma Şekli</div><div class="v">gece gündüz, kendiliğinden</div></div>
+      <div class="hm"><div class="k">Öğrenme</div><div class="v">kalıcı ve ölçülür</div></div>
+      <div class="hm"><div class="k">Model Bağımlılığı</div><div class="v">yok - model değişse de beyin kalır</div></div>
+      <div class="hm"><div class="k">Maliyet</div><div class="v">düşük - hazır iskelet üzerine ince katman</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 · NİYET ============ -->
+<section id="niyet">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">01 - NİYET</div>
+      <h2>Tek cümlede ne yapıyoruz?</h2>
+    </div>
+    <div class="intent">
+      <div class="q">❝</div>
+      <p>
+        Bir data mühendisinin gün içinde yaptığı işleri otomatik yapan, yaptıklarından öğrenen ve
+        kritik adımlarda insan onayına gelen bir dijital ekip arkadaşı kuruyoruz.
+        Bugün her görevde yapay zekâya her şeyi sıfırdan anlatıyoruz. Bu sistem, ekibin bilgisini biriktirir.
+        <strong>Yeni başlayan bir çalışan zamanla nasıl kıdemlenirse, bu sistem de öyle çalışır.</strong>
+      </p>
+    </div>
+    <div class="ba">
+      <div class="ba-col today">
+        <h4>Bugün - elimizde ne var?</h4>
+        <ul>
+          <li>Yapay zekâ bugün kodlarımızı, görevlerimizi, veritabanlarını ve sunucuları görebiliyor.</li>
+          <li>Birçok işlemi bizim yerimize daha hızlı yapıyor.</li>
+          <li>Ama her sohbet sıfırdan başlıyor; deneyim sohbet bitince kayboluyor.</li>
+          <li>Sistem ancak biri çağırınca çalışıyor; olayları kendisi yakalamıyor.</li>
+        </ul>
+      </div>
+      <div class="ba-arrow">➜</div>
+      <div class="ba-col tmrw">
+        <h4>Hedef - ne kazanıyoruz?</h4>
+        <ul>
+          <li>Öğrendiği her şey kalıcıdır: hangi tablolar hangi raporu verir, hangi hata nasıl çözülür.</li>
+          <li>Bir hata olduğunda kendisi yakalar, inceler ve çözümü onayımıza sunar.</li>
+          <li>Her görevle daha hızlı ve daha doğru çalışır; gelişimini haftalık skorla ölçer.</li>
+          <li>Kritik her adım insan onayından geçer; her şey kayıtlıdır ve geri alınabilir.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · CANLI SAHNE ============ -->
+<section id="sahne">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02 - CANLI SAHNE</div>
+      <h2>Gece saat 03:07. Ekip uyuyor. MrRobot ayakta.</h2>
+      <p class="sec-lede">
+        Bu, hedef senaryomuzun ekrandaki hâlidir. Gece bir hata oluşur; sistem hatayı kendiliğinden yakalar,
+        inceler ve çözümü doğrular. İnsan yalnızca tek bir noktada devreye girer: <strong>kararda.</strong>
+      </p>
+    </div>
+    <div class="scene-wrap">
+      <div class="chat">
+        <div class="chat-head">
+          <span class="chat-app"><span class="cdot"></span>Teams - Veri Ekibi Kanalı</span>
+          <span class="chat-live">temsilî akış · hedef çıktı</span>
+        </div>
+        <div class="chat-body">
+          <div class="chat-time"><span>03:02</span></div>
+          <div class="msg sys">
+            <div class="avatar s">Hİ</div>
+            <div class="bubble">
+              <div class="who"><b>HATA İZLEME</b> → MrRobot <span class="tagchip">anlık bildirim · kendiliğinden tetiklendi</span></div>
+              <p>Gece veri akışı durdu: <span class="code">tarih biçimi hatası</span> (Proje-2)</p>
+            </div>
+          </div>
+          <div class="msg bot">
+            <div class="avatar h">HE</div>
+            <div class="bubble">
+              <div class="who"><b>MrRobot</b></div>
+              <p>Hatayı yakaladım; hemen incelemeye başlıyorum.</p>
+              <div class="steps"><span>Loglar incelendi</span><span>Şema değişikliği bulundu</span><span>Kök neden belirlendi</span></div>
+            </div>
+          </div>
+          <div class="chat-time"><span>03:39</span></div>
+          <div class="msg bot">
+            <div class="avatar h">HE</div>
+            <div class="bubble">
+              <div class="who"><b>MrRobot</b></div>
+              <p><b>Kök neden:</b> Kaynak tablodaki tarih alanının biçimi değişmiş. Gece akışı bu yüzden durmuş.</p>
+              <p><b>Çözüm hazır:</b> Düzeltme kodunu yazdım ve aynı hatayı yakalayan yeni bir test ekledim.
+              Tüm kontroller yeşil: <span class="vpass">kod kalitesi ✓ · 42 test ✓ · güvenlik taraması ✓</span>
+              Risk düşük; istenirse tek komutla geri alınır.</p>
+              <p>Onaylarsanız test ortamına kurup akışı yeniden başlatırım.</p>
+            </div>
+          </div>
+          <div class="chat-time"><span>08:54</span></div>
+          <div class="msg me">
+            <div class="avatar m">MK</div>
+            <div class="bubble">
+              <div class="who"><b>METİN</b></div>
+              <p>onayla</p>
+            </div>
+          </div>
+          <div class="msg bot">
+            <div class="avatar h">HE</div>
+            <div class="bubble">
+              <div class="who"><b>MrRobot</b> · 08:55</div>
+              <p>Kurulum tamamlandı, akış yeniden çalıştı: <b>1.248.310 satır</b> işlendi ve raporlar zamanında hazır.
+              Bu çözümü yöntem olarak kaydettim. Aynı hata tipi bundan sonra yaklaşık <b>15 dakikada</b> çözülür.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-foot">Ekip 6 saat uyudu. Toplam insan eforu: <b>bir kelime.</b></div>
+      </div>
+      <div class="scene-side">
+        <div class="scene-stat">
+          <div class="n">5 sa 53 dk</div>
+          <p>Hata oluştuğu anda sistem çalışmaya başladı. Çözüm, kimseyi beklemeden onaya hazır hale geldi.</p>
+        </div>
+        <div class="scene-stat alt">
+          <div class="n">1 kelime</div>
+          <p>Ekipten sabah gelen tek katkı "onayla" oldu. Analizi, doğrulamayı, kurulumu ve raporu sistem yaptı.</p>
+        </div>
+        <div class="scene-note">
+          <b>Asıl mesaj son cümlede:</b> "yöntem olarak kaydettim."
+          Sistem bu hatayı çözmekle kalmadı; bu hatayı <b>çözmeyi öğrendi</b>.
+          Artık her görev, bir sonrakini hızlandırıyor.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · FARK ============ -->
+<section id="fark">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">03 - KONUMLANMA</div>
+      <h2>AI Coder'ı zaten tanıyorsunuz. Bizim farklımız ne?</h2>
+      <p class="sec-lede">
+        AI Coder, geliştiricilerin kod görevi açtığı ve onaylı bir kod değişikliği aldığı bir platformdur.
+        MrRobot başka bir soruya cevap verir: <strong>departmanın işini, olaydan sonuca kadar kimseyi beklemeden taşıyan
+        ve her işte hızlanan bir sistem.</strong>
+      </p>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:15%">Boyut</th>
+          <th class="c-them" style="width:37%">AI Coder (platform)</th>
+          <th class="c-us" style="width:48%">MrRobot (bizim Ar-Ge'miz)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dim">Nedir?</td>
+          <td class="them">Geliştiricilerin görev açtığı bir web platformudur; görev, onaylı bir kod değişikliğine dönüşür.</td>
+          <td class="us"><b>Departmanla birlikte yaşayan bir dijital ekip üyesidir;</b> işi baştan sona kendisi taşır.</td>
+        </tr>
+        <tr>
+          <td class="dim">Kim başlatır?</td>
+          <td class="them">Kullanıcı görev açar; sistem ancak çağrılınca çalışır.</td>
+          <td class="us"><b>Sistem kendiliğinden çalışır:</b> hata bildirimi, yeni talep veya zamanlanmış görev geldiğinde harekete geçer.</td>
+        </tr>
+        <tr>
+          <td class="dim">Kapsam</td>
+          <td class="them">Yazılım geliştirme görevlerini kapsar.</td>
+          <td class="us"><b>Ekip ne yapıyorsa onu kapsar:</b> gece hatası, rapor hazırlığı, veri işleme geliştirmesi, yayın kontrolü.</td>
+        </tr>
+        <tr>
+          <td class="dim">Hafıza</td>
+          <td class="them">Görev bitince edinilen birikim sınırlı kalır.</td>
+          <td class="us"><b>Öğrendiği her şey kalıcıdır</b> ve her yeni görevde hatırlanır. Geçmiş tüm sohbetler aranabilir.</td>
+        </tr>
+        <tr>
+          <td class="dim">Öğrenme</td>
+          <td class="them">Her görevde kalite kontrolleri uygular.</td>
+          <td class="us"><b>Çalışan yöntemleri kendisi kaydeder;</b> gelişimini haftalık testlerle ölçer ve gerektiğinde geri alır.</td>
+        </tr>
+        <tr>
+          <td class="dim">Alan bilgisi</td>
+          <td class="them">Genel yazılım mühendisliği bilgisi taşır.</td>
+          <td class="us"><b>Bizim veri dünyamızı bilir:</b> rapor tanımlarımızı, tablo ilişkilerimizi ve ekibin çözüm geçmişini.</td>
+        </tr>
+        <tr>
+          <td class="dim">Sunucu erişimi</td>
+          <td class="them">Platform içindeki kod depolarına erişir.</td>
+          <td class="us"><b>Sunuculara geçici yetkiyle ve güvenli tünelle erişir;</b> hiçbir yerde kalıcı şifre tutmaz.</td>
+        </tr>
+        <tr>
+          <td class="dim">Boyut</td>
+          <td class="them">Bakımı ağır, yedi ayrı parçadan oluşan büyük bir platformdur.</td>
+          <td class="us"><b>Hazır bir iskelet üzerine ince bir katmandır:</b> küçük ekip, hızlı geliştirme, düşük bakım.</td>
+        </tr>
+        <tr>
+          <td class="dim">Sonuç</td>
+          <td class="them">Onaylanmış bir kod değişikliği üretir.</td>
+          <td class="us"><b>Uçtan uca sonuç üretir:</b> "Hata şuydu, çözümü uyguladım ve doğruladım. Onaylarsanız yayınlarsım."</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pos-note">
+      <div class="i">🤝</div>
+      <p>
+        <strong>Bu iki sistem rakip değildir; birbirini tamamlar.</strong>
+        AI Coder, yapay zekâya görev yaptıran bir araçtır. MrRobot, yapay zekâyı işleten ve öğreten bir sistemdir.
+        MrRobot'in ürettiği şey kopyalanamaz: <strong>zamanla büyüyen kurumsal hafıza ve insanı beklemeden çalışan operasyon.</strong>
+        Ortak parçalar ileride iki sistem arasında paylaşılabilir.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · BEYİN ============ -->
+<section id="beyin">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">04 - FARKIN KALBİ</div>
+      <h2>"Akıl" herkesin satın alabildiği şeydir. Fark, "bilgelik"tedir.</h2>
+    </div>
+    <div class="brain-grid">
+      <div class="quote-box">
+        <div class="q1">Akıl değişir. <em>Bilgelik bizde kalır.</em></div>
+        <p>
+          "Bu rapor şu üç tablonun birleşiminden çıkar" veya "bu hata geçen ay böyle çözülmüştü" cümlesi
+          hiçbir yapay zekâ modelinin bilgisinde yoktur. Bu bilgi <strong>ekibimizin yaşanmış tecrübesidir</strong>
+          ve bugün sohbet kapanınca kaybolur.
+        </p>
+        <p>
+          MrRobot bu bilgiyi kalıcı dosyalara yazar. İşe yarayan her yöntemi kendisi kaydeder.
+          Tüm beyin, <strong>her değişikliğin izlendiği ve geri alınabildiği bir depoda</strong> tutulur:
+          her öğrenme bir kayıttır; yanlış bir öğrenme tek komutla geri alınır.
+          <strong>Model yarın değişse bile beyin yerinde kalır;</strong> daha güçlü bir model, aynı birikimle daha iyi iş çıkarır.
+        </p>
+      </div>
+      <div class="layers">
+        <div class="layer l1">
+          <span class="tag">Karakter</span>
+          <div><h5>Kimlik ve kurallar</h5><p>Her sohbette yüklenir. Sistemin kişiliği, öncelikleri ve <b>değişmez güvenlik kuralları</b> burada tanımlıdır.</p></div>
+        </div>
+        <div class="layer l2">
+          <span class="tag">Özet</span>
+          <div><h5>Küçük hafıza kartı</h5><p>Bilinenlerin özeti <b>her sohbette hazır</b> bulunur. Ayrıntı gerektiğinde dosyalardan yüklenir.</p></div>
+        </div>
+        <div class="layer l2">
+          <span class="tag">Birikim</span>
+          <div><h5>Bilgi dosyaları</h5><p>Rapor tarifleri, tablo ilişkileri ve proje notları burada durur. Her dosyada <b>tarih, kaynak ve güven durumu</b> yazılıdır.</p></div>
+        </div>
+        <div class="layer l3">
+          <span class="tag">Yöntemler</span>
+          <div><h5>Öğrenilmiş çözüm yolları</h5><p>İşe yarayan yöntemlerdir. Sistem bunları <b>kendi yazar</b> ve sonraki görevlerde hatırlar.</p></div>
+        </div>
+        <div class="layer l4">
+          <span class="tag">Arşiv</span>
+          <div><h5>Aranabilir sohbet geçmişi</h5><p>Tüm geçmiş konuşmalar kayıtlıdır ve <b>tam metin olarak aranabilir.</b></p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loop">
+      <h4>Kendini geliştirme döngüsü - ölçülür ve geri alınabilir</h4>
+      <ol>
+        <li><b>Görev gelir</b>Sistem bir mesajla, hata bildirimiyle veya zamanlanmış görevle tetiklenir.</li>
+        <li><b>Belleğine bakar</b>Önce kendi birikimini kontrol eder; eksikse kaynak sistemlere sorar.</li>
+        <li><b>İşi yapar</b>Analiz eder, kodu yazar ve doğrulama kapısından geçirir.</li>
+        <li><b>Öğrendiğini kaydeder</b>Yeni bilgiyi ve işe yarayan yöntemi otomatik olarak dosyalara yazar.</li>
+        <li><b>Ölçülür</b>Haftalık test seti koşar; skor düşerse son değişiklikler geri alınır.</li>
+      </ol>
+    </div>
+
+    <div class="curve">
+      <h4>Bileşik öğrenme: her görev, bir sonrakini hızlandırır</h4>
+      <p class="cap">Aynı türden bir işle kaç kez karşılaşıldıkça çözüm süresi ne olur? Hafızalı sistem ile hafızasız aracın farkı aşağıdaki gibidir:</p>
+      <svg viewBox="0 0 560 250" role="img" aria-label="Bileşik öğrenme eğrisi">
+        <defs>
+          <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(52,211,153,.28)"/>
+            <stop offset="100%" stop-color="rgba(52,211,153,0)"/>
+          </linearGradient>
+        </defs>
+        <!-- grid -->
+        <g stroke="rgba(148,163,184,.1)" stroke-width="1">
+          <line x1="50" y1="30" x2="530" y2="30"/>
+          <line x1="50" y1="85" x2="530" y2="85"/>
+          <line x1="50" y1="140" x2="530" y2="140"/>
+          <line x1="50" y1="195" x2="530" y2="195"/>
+        </g>
+        <!-- axes -->
+        <line x1="50" y1="20" x2="50" y2="195" stroke="rgba(148,163,184,.35)" stroke-width="1.5"/>
+        <line x1="50" y1="195" x2="530" y2="195" stroke="rgba(148,163,184,.35)" stroke-width="1.5"/>
+        <!-- y labels -->
+        <g font-family="ui-monospace,monospace" font-size="9.5" fill="#5d6b7d">
+          <text x="8" y="33">4 sa</text>
+          <text x="8" y="88">2 sa</text>
+          <text x="8" y="143">45 dk</text>
+          <text x="8" y="198">10 dk</text>
+          <text x="8" y="215" font-size="8.5">süre →</text>
+        </g>
+        <!-- x labels -->
+        <g font-family="ui-monospace,monospace" font-size="9.5" fill="#5d6b7d" text-anchor="middle">
+          <text x="60" y="213">1. iş</text>
+          <text x="200" y="213">20. iş</text>
+          <text x="360" y="213">100. iş</text>
+          <text x="510" y="213">500. iş</text>
+        </g>
+        <!-- flat reference: memoryless tool -->
+        <path d="M 60 55 L 520 55" stroke="#5d6b7d" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+        <text x="516" y="48" font-family="ui-monospace,monospace" font-size="10" fill="#8b98a9" text-anchor="end">hafızasız araç - her iş aynı süre</text>
+        <!-- hermes curve -->
+        <path d="M 60 30 C 140 32, 165 130, 250 160 C 330 187, 430 190, 520 191"
+              stroke="#34d399" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M 60 30 C 140 32, 165 130, 250 160 C 330 187, 430 190, 520 191 L 520 195 L 60 195 Z"
+              fill="url(#area)" stroke="none"/>
+        <!-- dots -->
+        <g fill="#34d399">
+          <circle cx="60" cy="30" r="5"/>
+          <circle cx="250" cy="160" r="5"/>
+          <circle cx="520" cy="191" r="5"/>
+        </g>
+        <circle cx="60" cy="30" r="9" fill="none" stroke="rgba(52,211,153,.4)"/>
+        <circle cx="250" cy="160" r="9" fill="none" stroke="rgba(52,211,153,.4)"/>
+        <circle cx="520" cy="191" r="9" fill="none" stroke="rgba(52,211,153,.4)"/>
+        <!-- annotations -->
+        <g font-family="ui-monospace,monospace" font-size="10" fill="#e6edf3">
+          <text x="78" y="26">1. iş: 4 saat</text>
+          <text x="268" y="156">20. iş: yarım saat</text>
+          <text x="512" y="176" text-anchor="end">500. iş: 10 dakika</text>
+        </g>
+      </svg>
+      <div class="legend">
+        <span><span class="lg-line"></span> MrRobot: öğrenir ve hızlanır</span>
+        <span><span class="lg-dash"></span> Hafızasız araç: her iş baştan başlar</span>
+      </div>
+      <p class="foot">İki çizgi arasındaki alan, <b>birikerek kazanılan zamandır.</b> Bu birikim modele değil, bizim deposumuza aittir. Model değişse bile eğri yerinde kalır.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · SENARYOLAR ============ -->
+<section id="senaryo">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">05 - GÜNLÜK İŞE ETKİ</div>
+      <h2>Dört senaryo, aynı desen: rutin gider, karar kalır.</h2>
+    </div>
+    <div class="scen-grid">
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">🌙</div>
+          <div><div class="cat">Operasyon</div><h4>Gece 03:00 - veri akışı hatası</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Bugün</span><div class="now-t">Sabah işe gelince hatayı fark ederiz. Logları açarız, sebebi buluruz, düzeltiriz ve akışı yeniden çalıştırırız. Yarım günümüz gider; raporlar gecikir.</div></div>
+          <div class="scen-row"><span class="lbl goal">Hedef</span><div class="goal-t">Sistem hatayı anında yakalar ve çözümü test ortamında doğrular. Sabah bizi tek bir mesaj karşılar: <b>"Onaylarsanız yayınlarsım."</b> Yukarıdaki canlı sahneye bakınız.</div></div>
+        </div>
+        <div class="scen-foot">Hata müdahalesi: <span>saatlerden dakikalara iner</span></div>
+      </div>
+
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">📊</div>
+          <div><div class="cat">Analiz</div><h4>İş biriminden rapor talebi</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Bugün</span><div class="now-t">İş birimi rapor ister. Doğru tabloları, doğru tanımları ve filtreleri bulmak bir-iki günümüze mal olur; sonra sorguyu yazarız.</div></div>
+          <div class="scen-row"><span class="lbl goal">Hedef</span><div class="goal-t">Sistem veri sözlüğüne ve önceki çözümlere bakar ve şöyle der: <b>"Bu rapor şu üç tablodan çıkar. 'Kayıp' tanımı geçen raporda şöyle yapılmıştı; aynısını kullanıyorum."</b> Bir sonraki benzer istekte araştırma süresi sıfırdır.</div></div>
+        </div>
+        <div class="scen-foot">Rapor hazırlığı: <span>günlerden saatlere iner</span></div>
+      </div>
+
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">⚙️</div>
+          <div><div class="cat">Geliştirme</div><h4>Yeni kaynak tablo ekleme</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Bugün</span><div class="now-t">Şemayı inceleriz, aktarım kodunu yazarız, test ederiz, dokümante ederiz ve yayınlarız. İşlem iki-üç gün sürer.</div></div>
+          <div class="scen-row"><span class="lbl goal">Hedef</span><div class="goal-t">Sistem, ekibin önceki benzer akışlarını örnek alır. Kodu, testi ve dokümanı hazırlar ve doğrulama kapısından geçirir. <b>Ekibin standartları otomatik uygulanır;</b> bize yalnızca gözden geçirme kalır.</div></div>
+        </div>
+        <div class="scen-foot">Geliştirme: <span>günlerden saatlere iner</span></div>
+      </div>
+
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">🧠</div>
+          <div><div class="cat">Kurumsal hafıza</div><h4>"Bu tablo neden böyle hesaplanıyor?"</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Bugün</span><div class="now-t">Cevap çoğu zaman bir kişinin kafasındadır. O kişi izinliyse ya da işten ayrılırsa bilgi kaybolur.</div></div>
+          <div class="scen-row"><span class="lbl goal">Hedef</span><div class="goal-t">Çözülen her problem ve öğrenilen her tanım kayıtlı ve aranabilirdir. <b>Bilgi kişiye değil, ekibe ait olur;</b> yeni gelen çalışan da sistem de aynı kaynaktan öğrenir.</div></div>
+        </div>
+        <div class="scen-foot">Kurumsal hafıza: <span>kişiden depoya taşınır</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 · MİMARİ ============ -->
+<section id="mimari">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">06 - MİMARİ</div>
+      <h2>Tek bir merkezi beyin, dışarıdan girilemeyen izole bir sunucu.</h2>
+      <p class="sec-lede">
+        Sistem, tek ve izole bir sunucuda çalışır. Beyin, her değişikliği izlenen bir depoda durur;
+        <strong>sunucu gitse bile bilgi gitmez.</strong>
+      </p>
+    </div>
+    <div class="arch">
+      <div class="arch-flow">
+        <div class="node-row">
+          <div class="anode trigger"><div class="t">Teams</div><div class="d">talep, onay, geri bildirim</div></div>
+          <div class="anode trigger"><div class="t">Hata izleme</div><div class="d">hata anında bildirim</div></div>
+          <div class="anode trigger"><div class="t">Jira</div><div class="d">talepler ve durum</div></div>
+          <div class="anode trigger"><div class="t">Zamanlanmış görevler</div><div class="d">gece kontrolleri, testler</div></div>
+        </div>
+        <div class="connector">▼ <span class="lbl">dışarıdan hiçbir bağlantı kabul edilmez</span></div>
+        <div class="node-row">
+          <div class="anode core">
+            <div class="t">MERKEZİ SUNUCU - MrRobot (7x24)</div>
+            <div class="d">izole makine · dışarıdan erişilemez · tüm beyin versiyonlanmış depoda</div>
+            <div class="inner">
+              <span class="chip">karakter + kurallar</span>
+              <span class="chip">hafıza kartı</span>
+              <span class="chip">birikim dosyaları</span>
+              <span class="chip">yöntemler</span>
+              <span class="chip">emniyet kapısı</span>
+              <span class="chip">zamanlanmış işler</span>
+              <span class="chip">görev dağıtımı</span>
+            </div>
+          </div>
+        </div>
+        <div class="connector">▼ <span class="lbl">geçici yetki ve güvenli tünelle · kalıcı şifre yok</span></div>
+        <div class="node-row">
+          <div class="anode target"><div class="t">AWS ortamları</div><div class="d">sunucular ve veri gölleri · dışarıdan açık kapı yok</div></div>
+          <div class="anode target"><div class="t">Veri sözlüğü + veri ambarı</div><div class="d">her seferinde canlı sorgulanır</div></div>
+          <div class="anode obs"><div class="t">Hata izleme (ayrı sunucu)</div><div class="d">yalnızca okuma yetkisi</div></div>
+        </div>
+      </div>
+      <div class="arch-note">
+        <div class="an"><b>Yayınlama onaylıdır</b>Ekip onay verir; sistem geçici yetki alır, kurulumu yapar ve sonucu raporlar.</div>
+        <div class="an"><b>Her adım kayıtlıdır</b>Sistemin yaptığı her işlem günlüğe yazılır; denetim her zaman mümkündür.</div>
+        <div class="an"><b>Gözlemci ayrı durur</b>Hataları toplayan sistem ile teşhis koyan sistem ayrı makinelerdedir; erişim yalnızca okumadır.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 · GÜVENLİK ============ -->
+<section id="guvenlik">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">07 - GÜVENLİK TASARIMI</div>
+      <h2>Kontroller kod seviyesindedir; sistemin söylediğine değil yaptığına güveniyoruz.</h2>
+      <p class="sec-lede">
+        Böyle bir sistemin kurumda kabulü tek şarta bağlıdır: <strong>yapabileceklerinin kesin sınırları olmalıdır.</strong>
+        Bu sınır üç sabit kapıyla kurulur:
+      </p>
+    </div>
+    <div class="ctrl-grid">
+      <div class="ctrl">
+        <div class="ico">🛡️</div>
+        <h4>Emniyet Kapısı</h4>
+        <p>Sisteme yazılan kural unutulabilir; <b>kod seviyesindeki engel unutmaz.</b> Her komut, çalışmadan önce otomatik olarak kontrol edilir:</p>
+        <div class="snippet">"müşteri tablosunu sil"    → <span class="bad">OTOMATİK ENGEL</span><br>"prod'a bağlan ve kapat"  → <span class="wr">İNSAN ONAYI ŞART</span><br>"test ortamında çalıştır" → <span class="ok">SERBEST</span></div>
+      </div>
+      <div class="ctrl">
+        <div class="ico">✅</div>
+        <h4>Doğrulama Kapısı</h4>
+        <p>Sistem "onaylarsanız yayınlayayım" diyebilmek için önce şu beş kontrolden geçmek zorundadır:</p>
+        <div class="snippet">1. kod kalitesi kontrolü<br>2. tip güvenliği kontrolü<br>3. tüm testler<br>4. gizli anahtar taraması<br>5. özet + risk seviyesi<br><br>→ beşi de yeşilse onay ister;<br>   değilse <span class="bad">susar ve düzeltir</span></div>
+      </div>
+      <div class="ctrl">
+        <div class="ico">📈</div>
+        <h4>Ölçüm</h4>
+        <p>"Kendini geliştirdi" iddiası kanıtsız kalmaz. Sabit bir test seti <b>her hafta otomatik koşar:</b></p>
+        <div class="snippet">test: bir hatayı teşhis et<br>puanlama (rubrik 1-5):<br>  · kök neden doğru mu?<br>  · öneri uygulanabilir mi?<br>  · risk ve ortam belirtilmiş mi?<br>  · onay adımı korunmuş mu?<br><br>skor düşerse → son değişiklikler<br><span class="wr">otomatik olarak geri alınır</span></div>
+      </div>
+    </div>
+
+    <h2 style="font-size:20px;margin:36px 0 18px">Erişim kapsamı: neye, ne için, ne kadar yetki?</h2>
+    <table class="perm">
+      <thead>
+        <tr><th>Bilgi / Sistem</th><th>Ne için kullanacak?</th><th>Yetki</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Kod (Bitbucket)</td><td>Hatanın nerede olduğunu bulur ve düzeltme önerisi hazırlar.</td><td><span class="badge r">Okuma</span> <span class="badge rw">Öneri - onayımızla</span></td></tr>
+        <tr><td>Jira</td><td>Gelen talepleri ve hata kayıtlarını okur; gerektiğinde yorum yazar.</td><td><span class="badge r">Okuma</span> <span class="badge rw">Yorum</span></td></tr>
+        <tr><td>Veri sözlüğü (OpenMetadata)</td><td>"Bu rapor hangi tablolardan çıkar?" sorusuna cevap verir.</td><td><span class="badge r">Yalnızca okuma</span></td></tr>
+        <tr><td>Test / geliştirme veritabanları</td><td>Sorguları doğrular ve veri kalitesini kontrol eder.</td><td><span class="badge r">Yalnızca okuma</span></td></tr>
+        <tr><td>Hata kayıtları ve loglar</td><td>Hataları biz fark etmeden yakalar ve inceler.</td><td><span class="badge r">Yalnızca okuma</span></td></tr>
+        <tr><td>Test / geliştirme sunucuları</td><td>Servis durumunu kontrol eder ve onaylı kurulum yapar.</td><td><span class="badge rw">Geçici yetki · kayıtlı · onaylı</span></td></tr>
+        <tr><td>Üretim (prod) ortamı</td><td>-</td><td><span class="badge no">İLK AŞAMADA HİÇBİR BAĞLANTI YOK</span></td></tr>
+        <tr><td>Kişisel / müşteri verisi</td><td>-</td><td><span class="badge no">KAPSAM DIŞI - sistem veri içeriğiyle değil, veri yapısıyla çalışır</span></td></tr>
+      </tbody>
+    </table>
+    <p class="perm-note">
+      <b>Ek güvenceler:</b> Sistem hiçbir yerde kalıcı şifre tutmaz; erişimi her seferinde kısa süreli geçici yetkiyle alır.
+      Sunucularda dışarıdan açık tek bir kapı bile yoktur. Öğrendiği her şey versiyonlanmış depoda tutulur ve
+      istendiği anda geri alınabilir.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 08 · YOL HARİTASI ============ -->
+<section id="yol">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">08 - YOL HARİTASI</div>
+      <h2>Adım adım ilerliyoruz; her fazın çıktısı ölçülebilir.</h2>
+    </div>
+    <div class="phases">
+      <div class="phase done">
+        <span class="ph-tag">Faz 1 · Tamamlandı</span>
+        <h4>Beyin iskeleti kuruldu</h4>
+        <p>Hafıza düzeni, güvenlik kuralları, emniyet ve doğrulama kapıları ile test tasarımı hazır duruyor. Her şey kayıtlı ve denetlenebilir.</p>
+        <span class="ph-out">Çıktı: denetlenebilir temel - hazır</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Faz 2</span>
+        <h4>Yerel çalışma ve başlangıç ölçümü</h4>
+        <p>Sistemi yerelde çalışır hale getiriyoruz. İlk yöntemler yazılacak ve başlangıç test skoru alınacak.</p>
+        <span class="ph-out">Çıktı: çalışan sistem + ölçülmüş başlangıç</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Faz 3</span>
+        <h4>Kesintisiz çalışma (bulut Ar-Ge ortamı)</h4>
+        <p>Sistem, bulut ekibinin ayırdığı izole sunucuya taşınacak. Teams üzerinden her an erişilebilir hale gelecek ve olayları dinlemeye başlayacak.</p>
+        <span class="ph-out">Çıktı: 7x24 erişilebilir sistem</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Faz 4</span>
+        <h4>Sunucu erişimi ve uçtan uca yayınlama</h4>
+        <p>Hedef sunuculara geçici yetkiyle erişim kurulacak. Onaylı kurulum akışı, test ortamında uçtan uca denenecek.</p>
+        <span class="ph-out">Çıktı: onaylı yayınlama akışı - test ortamında</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Faz 5</span>
+        <h4>Otomatik hata teşhisi</h4>
+        <p>Sistem, ayrı bir sunucudaki hata izleme sistemine bağlanacak. Hata yakalama, kök neden analizi ve çözüm önerisi akışı otomatikleşecek. Üretim ortamına hiçbir bağlantı kurulmayacak.</p>
+        <span class="ph-out">Çıktı: "gece 03:07" senaryosu canlı</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Faz 6</span>
+        <h4>Kendini besleyen sistem</h4>
+        <p>Zamanlanmış görev seti devreye alınacak: gece veri kalitesi kontrolü, hata taraması, günlük öğrenme raporu ve haftalık test koşusu. Maliyeti düşürmek için model katmanlaması eklenecek.</p>
+        <span class="ph-out">Çıktı: öğrenen, ölçen ve raporlayan tam döngü</span>
+      </div>
+    </div>
+    <div class="roadmap-note">
+      <b>Hız:</b> İlk iki ayın sonunda çalışan bir demo ve başlangıç skorları elimizde olur.
+      Her fazın çıktısı ölçülebilir olduğu için yatırıma her noktada dur veya devam kararı verilebilir.
+      "Hep ya da hiç" riski taşımıyoruz.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 · KAZANÇ ============ -->
+<section id="kazanc">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">09 - KAZANÇ</div>
+      <h2>Ne elde edeceğiz?</h2>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="big"><span data-count="90" data-prefix="−" data-suffix="%">−90%</span></div>
+        <div class="cmp">gece hata müdahale süresi</div>
+        <p>Gece hataları sabah tek bir onayla çözülür. Ekip göreve değil karara odaklanır.</p>
+      </div>
+      <div class="kpi">
+        <div class="big"><span data-count="10" data-prefix="×" data-suffix="">×10</span></div>
+        <div class="cmp">rapor ve geliştirme hızı</div>
+        <p>Arama ve keşif süresi hafızadan gelir. Her yeni iş, bir öncekinden daha hızlı biter.</p>
+      </div>
+      <div class="kpi">
+        <div class="big">%0</div>
+        <div class="cmp">personel dönüşünde bilgi kaybı</div>
+        <p>Kurumsal hafıza depodadır. İzin, ayrılma ve yeni başlama durumlarında süreklilik bozulmaz.</p>
+      </div>
+      <div class="kpi">
+        <div class="big">↑<span class="suffix">haftalık</span></div>
+        <div class="cmp">ölçülebilir gelişim</div>
+        <p>Gelişim haftalık test skoruyla kanıtlanır. Bir bozulma anında fark edilir ve geri alınır.</p>
+      </div>
+    </div>
+    <div class="dev-block">
+      <h3>Geliştirme tarafında ne değişir?</h3>
+      <p class="dev-cap">
+        Bir veri geliştiricinin işi tek bir kod yazmaktan ibaret değildir; şemayı anlamaktan yayına kadar
+        <strong>beş ayrı adımı</strong> üst üste dizer. Sistem bu zincirin tamamını taşıyor;
+        insana yalnızca en başta tarif ve en sonda gözden geçirme kalıyor:
+      </p>
+      <div class="dev-steps">
+        <div class="dstep">
+          <div class="ds-t">Şema incelemesi</div>
+          <div class="ds-row"><span class="was">yarım gün</span><span class="now2">dakikalar</span></div>
+          <div class="ds-d">Sistem, kaynağın yapısını okur ve <b>tutulacak yerleri kendisi çıkarır.</b> Ekibin isimlendirme ve biçim kuralları otomatik uygulanır.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Kod yazımı</div>
+          <div class="ds-row"><span class="was">1 gün</span><span class="now2">dakikalar</span></div>
+          <div class="ds-d">Sistem, ekibin daha önce yazdığı <b>benzer akışları örnek alır.</b> Çıktı, ekibin kendi tarzında ve kendi standartlarında koddur; yabancı bir üslup değil.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Test</div>
+          <div class="ds-row"><span class="was">yarım gün</span><span class="now2">otomatik</span></div>
+          <div class="ds-d">Mevcut testler koşar; kapsam yetersizse sistem <b>eksik testi kendisi yazar</b> ve doğrulama kapısından geçirir. Kırmızı varsa yayına gelmez.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Dokümantasyon</div>
+          <div class="ds-row"><span class="was">yarım gün</span><span class="now2">anında</span></div>
+          <div class="ds-d">Bugün en çok ihmal edilen adımdır. Sistem için <b>bedavadır:</b> kodla birlikte güncel doküman ve değişiklik özeti otomatik üretilir.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Yayın</div>
+          <div class="ds-row"><span class="was">koordinasyon</span><span class="now2">onaylı</span></div>
+          <div class="ds-d">Kurulum önerisi hazır gelir. Ekip <b>"onayla"</b> der; sistem kurar, doğrular ve sonucu raporlar. Geri alma yolu her zaman bellidir.</div>
+        </div>
+      </div>
+      <div class="dev-total">
+        <div class="dt-lbl"><b>Bir kaynak tabloyu devreye alma</b> — toplam ekip eforu:</div>
+        <div class="dt-nums">
+          <span class="dt-old">2-3 gün</span>
+          <span class="dt-arrow">→</span>
+          <span class="dt-new">2-3 saat</span>
+        </div>
+      </div>
+      <div class="dev-gains">
+        <div class="dg"><div class="dg-i">🔁</div><p><b>Her yeni benzer iş, daha da kısalır.</b>Sistem, az önce yazdığı akışı bir yöntem olarak kaydeder. Üçüncü tabloda süre yarıya iner; onuncuda rutine döner.</p></div>
+        <div class="dg"><div class="dg-i">📋</div><p><b>Gözden geçirme kalitesi artar.</b>Geliştirici, kod yazmakla değil doğru çözümü değerlendirmekle meşgul olur. Yorumlar tarz yerine içeriğe döner.</p></div>
+        <div class="dg"><div class="dg-i">🎓</div><p><b>Yeni gelen geliştirici hızla verimli olur.</b>Ekibin birikimi depodadır. Sistemin sorduğu soruları cevaplamak, aylar süren keşfi haftalara indirir.</p></div>
+        <div class="dg"><div class="dg-i">🧪</div><p><b>Test disiplini bozulmaz.</b>Doğrulama kapısı kod kalitesi, tip güvenliği, test ve güvenlik taramasını her değişiklikte zorunlu kılar. Aceleye gelen iş bile kapıdan geçmek zorundadır.</p></div>
+        <div class="dg"><div class="dg-i">📚</div><p><b>Dokümantasyon bayatlamaz.</b>Doküman kodla aynı anda üretilir ve değişir. "Doküman güncel değil" mazereti tarihe karışır.</p></div>
+        <div class="dg"><div class="dg-i">🛠️</div><p><b>Bakım yükü hafifler.</b>Sistem, kendi yazdığı akışların sorunlarını da tanır. Benzer bir hata görürse önce kendi çözüm geçmişine bakar.</p></div>
+      </div>
+    </div>
+
+    <div class="gain-list">
+      <div class="gain"><div class="i">⏱️</div><p><b>Operasyonel yük azalır.</b>Gece ve hafta sonu hataları, rutin kalite kontrolleri ve ilk seviye teşhis artık sistemin işidir.</p></div>
+      <div class="gain"><div class="i">🎯</div><p><b>Ekip, değer üreten işe kayar.</b>Sistem rutini yapar; ekip mimariye, kaliteye ve yeni iş değerlerine odaklanır.</p></div>
+      <div class="gain"><div class="i">📐</div><p><b>Standartlar otomatik uygulanır.</b>Doğrulama kapısı, ekibin kalite kurallarını her değişiklikte zorunlu kılar.</p></div>
+      <div class="gain"><div class="i">🔍</div><p><b>Her şey denetlenebilir.</b>Her öğrenme kayıtlıdır, her komut emniyet kapısından geçer, her kurulum onaylıdır. Geri alma her zaman mümkündür.</p></div>
+      <div class="gain"><div class="i">🧩</div><p><b>Model bağımsızlığı vardır.</b>Zekâ modeli değiştirilebilir bir parçadır; birikim bizde kalır. Tedarikçi kilidi yoktur.</p></div>
+      <div class="gain"><div class="i">🚀</div><p><b>Ar-Ge maliyeti düşüktür.</b>Hazır iskelet üzerine ince bir katman yazıyoruz. Küçük bir ekip hızlı iterasyon yapar ve bakım yükü düşük kalır.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · NEDEN ŞİMDİ ============ -->
+<section id="simdi">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">10 - NEDEN ŞİMDİ</div>
+      <h2>Bu pencere sonsuza dek açık kalmayacak.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why">
+        <div class="wn">01 · MODEL DALGASI</div>
+        <h4>Modeller her çeyrek güçleniyor. Beyni olan, dalgayı sörf yapar.</h4>
+        <p>Yeni bir model çıktığında hafızasız kullanıcılar yine sıfırdan başlar.
+        <b>Beyni hazır olan, yeni modeli ilk gün verimli kullanır.</b>
+        Model yenilemesi bizim için risk değil, bedava terfi olur.</p>
+      </div>
+      <div class="why">
+        <div class="wn">02 · REKABET</div>
+        <h4>Herkes aynı modeli satın alabilir. Kimse sizin iki yıllık tecrübenizi satın alamaz.</h4>
+        <p>Kurumsal hafıza <b>kopyalanamaz bir avantajdır.</b> Bu eğri erken başlayana üstel biçimde büyür.
+        Geç başlayan rakip asla yakalayamaz; çünkü öğrenme süresi parayla alınamaz.</p>
+      </div>
+      <div class="why">
+        <div class="wn">03 · HAZIR TEMEL</div>
+        <h4>Binanın yarısı bitti. Riske değil, kata yatırıyoruz.</h4>
+        <p>Temel yaklaşım kurum içinde zaten kanıtlandı: sistemler görünüyor, işler hızlanıyor.
+        Bu çalışma, üzerine <b>ince bir beyin katmanı</b> eklemekten ibarettir.
+        Küçük ekip, hızlı iterasyon, ölçülebilir çıktı.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section class="closing">
+  <div class="wrap">
+    <div class="sec-num">KAPANIŞ</div>
+    <h2>Soru "yapabilir miyiz" değil.<br><em>"Kim önce yapar?"</em></h2>
+    <p class="sec-lede">
+      Bu bir araç yatırımı değil, <strong>kurumsal hafıza yatırımıdır.</strong>
+      Araçlar eskir ve modeller değişir; ekibin öğrendikleri kalır.
+      MrRobot ile her gece, her hata ve her rapor, bileşik faizle çalışan bir departman varlığına dönüşüyor.
+    </p>
+    <div class="close-cards">
+      <div class="close-card">
+        <div class="ck">Temel</div>
+        <p>Beyin iskeleti hazır.</p>
+        <span>Faz 1 tamamlandı; her şey kayıtlı ve denetlenebilir.</span>
+      </div>
+      <div class="close-card">
+        <div class="ck">İlk Demo</div>
+        <p>İki ay içinde.</p>
+        <span>Çalışan sistem ve başlangıç skorları elimizde olur.</span>
+      </div>
+      <div class="close-card">
+        <div class="ck">Kanıt</div>
+        <p>Her hafta ölçülür.</p>
+        <span>Gelişim skoruyla raporlanır; iddia değil veri sunarız.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>MrRobot · Data Analytics Ar-Ge · 2026 - <span class="mono">"Bilgi kişiye değil, ekibe aittir."</span></p>
+    <p class="mono">beyin = kayıtlı depo · her öğrenme bir kayıttır</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function finalize(el){
+    var p=el.dataset.prefix||'', s=el.dataset.suffix||'', d=el.dataset.dec?parseInt(el.dataset.dec,10):0;
+    el.textContent=p+(parseFloat(el.dataset.count)).toFixed(d)+s;
+  }
+  function animate(el){
+    var target=parseFloat(el.dataset.count), dur=1200, t0=null;
+    var p=el.dataset.prefix||'', s=el.dataset.suffix||'', d=el.dataset.dec?parseInt(el.dataset.dec,10):0;
+    function step(t){
+      if(t0===null)t0=t;
+      var prog=Math.min((t-t0)/dur,1), ease=1-Math.pow(1-prog,3);
+      el.textContent=p+(target*ease).toFixed(d)+s;
+      if(prog<1)requestAnimationFrame(step); else el.textContent=p+target.toFixed(d)+s;
+    }
+    requestAnimationFrame(step);
+  }
+  var els=document.querySelectorAll('[data-count]');
+  if(reduce||!('IntersectionObserver' in window)){
+    els.forEach(finalize); return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ animate(e.target); io.unobserve(e.target); }
+    });
+  },{threshold:.4});
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

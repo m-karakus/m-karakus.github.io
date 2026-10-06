@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MrRobot - The Teammate That Never Tires · CTO Presentation</title>
+<style>
+  :root{
+    --bg:#0a0e13;
+    --panel:#10161e;
+    --panel2:#141c26;
+    --line:rgba(148,163,184,.16);
+    --line2:rgba(148,163,184,.28);
+    --txt:#e6edf3;
+    --muted:#8b98a9;
+    --dim:#5d6b7d;
+    --accent:#34d399;
+    --accent-dim:rgba(52,211,153,.12);
+    --accent-line:rgba(52,211,153,.35);
+    --blue:#60a5fa;
+    --blue-dim:rgba(96,165,250,.10);
+    --amber:#fbbf24;
+    --amber-dim:rgba(251,191,36,.10);
+    --red:#f87171;
+    --mono:ui-monospace,'SF Mono','Cascadia Code','JetBrains Mono',Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(52,211,153,.25)}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,14,19,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:14px;height:52px}
+  .brand{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--accent)}
+  .brand .path{color:var(--dim);font-weight:400}
+  .topbar nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+  .topbar a{
+    color:var(--muted);text-decoration:none;font-size:12.5px;padding:5px 10px;border-radius:6px;
+    transition:.15s;
+  }
+  .topbar a:hover{color:var(--txt);background:rgba(148,163,184,.1)}
+
+  /* ---------- hero ---------- */
+  header.hero{padding:84px 0 60px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  header.hero::before{
+    content:'';position:absolute;inset:-20%;
+    background:
+      radial-gradient(700px 300px at 15% 0%,rgba(52,211,153,.09),transparent 60%),
+      radial-gradient(600px 260px at 85% 20%,rgba(96,165,250,.07),transparent 60%);
+    pointer-events:none;
+    animation:drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%{transform:translate(0,0) scale(1)}
+    100%{transform:translate(40px,-24px) scale(1.06)}
+  }
+  .hero .wrap{position:relative}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-line);
+    padding:5px 14px;border-radius:999px;margin-bottom:22px;
+  }
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 4px var(--accent)}50%{box-shadow:0 0 16px var(--accent)}}
+  h1{font-size:44px;line-height:1.12;font-weight:800;letter-spacing:-.025em;margin-bottom:16px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .sub{font-size:18px;color:var(--muted);max-width:800px;line-height:1.6}
+  .sub strong{color:var(--txt);font-weight:600}
+  .hero-meta{display:flex;gap:26px;margin-top:36px;flex-wrap:wrap}
+  .hm{border-left:2px solid var(--accent-line);padding-left:14px}
+  .hm .k{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:2px}
+  .hm .v{font-family:var(--mono);font-size:13px;color:var(--txt)}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:34px}
+  .sec-num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.15em;margin-bottom:8px}
+  h2{font-size:27px;font-weight:750;letter-spacing:-.01em;margin-bottom:8px}
+  .sec-lede{color:var(--muted);font-size:15.5px;max-width:820px}
+  .sec-lede strong{color:var(--txt)}
+
+  /* one-sentence banner */
+  .intent{
+    background:linear-gradient(135deg,var(--accent-dim),transparent 65%);
+    border:1px solid var(--accent-line);border-radius:14px;
+    padding:26px 30px;display:flex;gap:20px;align-items:flex-start;
+  }
+  .intent .q{font-size:30px;line-height:1;color:var(--accent);font-family:var(--mono)}
+  .intent p{font-size:17px;line-height:1.65}
+  .intent p strong{color:var(--accent)}
+
+  /* before/after strip */
+  .ba{display:grid;grid-template-columns:1fr 44px 1fr;gap:0;margin-top:26px;align-items:stretch}
+  .ba-col{border-radius:12px;padding:20px 24px;border:1px solid var(--line)}
+  .ba-col.today{background:var(--panel);border-color:var(--line2)}
+  .ba-col.tmrw{background:linear-gradient(160deg,rgba(52,211,153,.08),var(--panel));border-color:var(--accent-line)}
+  .ba-col h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+  .ba-col.today h4{color:var(--dim)}
+  .ba-col.tmrw h4{color:var(--accent)}
+  .ba-col ul{list-style:none}
+  .ba-col li{padding:6px 0 6px 26px;position:relative;color:var(--muted);font-size:14px}
+  .ba-col.tmrw li{color:var(--txt)}
+  .ba-col li::before{position:absolute;left:2px;font-family:var(--mono)}
+  .ba-col.today li::before{content:'✕';color:var(--red);font-size:12px;top:8px}
+  .ba-col.tmrw li::before{content:'✓';color:var(--accent);font-size:12px;top:8px}
+  .ba-arrow{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:20px}
+
+  /* ---------- LIVE SCENE / chat ---------- */
+  .scene-wrap{display:grid;grid-template-columns:1fr .72fr;gap:26px;align-items:start}
+  .chat{
+    border:1px solid var(--line2);border-radius:16px;background:var(--panel);
+    overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.4);
+  }
+  .chat-head{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel2);
+  }
+  .chat-app{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .chat-app .cdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px;animation:pulse 2s infinite;vertical-align:1px}
+  .chat-live{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
+  .chat-body{padding:20px 18px;display:flex;flex-direction:column;gap:14px}
+  .chat-time{
+    font-family:var(--mono);font-size:10.5px;color:var(--dim);text-align:center;letter-spacing:.1em;
+  }
+  .chat-time span{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+  .msg{display:flex;gap:11px;max-width:94%}
+  .msg.me{align-self:flex-end;flex-direction:row-reverse}
+  .avatar{
+    width:32px;height:32px;border-radius:9px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:13px;font-weight:700;margin-top:2px;
+  }
+  .avatar.h{background:var(--accent-dim);border:1px solid var(--accent-line);color:var(--accent)}
+  .avatar.m{background:var(--blue-dim);border:1px solid rgba(96,165,250,.35);color:var(--blue)}
+  .avatar.s{background:var(--amber-dim);border:1px solid rgba(251,191,36,.35);color:var(--amber)}
+  .bubble{
+    border:1px solid var(--line);border-radius:12px;background:var(--panel2);
+    padding:11px 15px;font-size:13.3px;
+  }
+  .msg.me .bubble{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.25)}
+  .bubble .who{
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .msg .who b{color:var(--accent);font-size:10.5px}
+  .msg.me .who b{color:var(--blue)}
+  .tagchip{
+    font-family:var(--mono);font-size:9px;padding:1px 8px;border-radius:5px;
+    background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--amber);
+  }
+  .bubble p{margin-bottom:7px;color:var(--muted)}
+  .bubble p:last-child{margin-bottom:0}
+  .bubble p b{color:var(--txt)}
+  .bubble .code{
+    font-family:var(--mono);font-size:11.5px;color:var(--accent);
+    background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.18);
+    padding:0 5px;border-radius:4px;white-space:nowrap;
+  }
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .steps span{
+    font-family:var(--mono);font-size:10px;color:var(--muted);
+    background:rgba(148,163,184,.08);border:1px solid var(--line);
+    padding:3px 9px;border-radius:6px;
+  }
+  .vpass{
+    font-family:var(--mono);font-size:10.5px;color:var(--accent);
+    background:var(--accent-dim);border:1px solid var(--accent-line);
+    padding:1px 8px;border-radius:5px;white-space:nowrap;
+  }
+  .chat-foot{
+    padding:14px 18px;border-top:1px solid var(--line);
+    background:linear-gradient(90deg,rgba(52,211,153,.07),transparent 70%);
+    font-size:14px;color:var(--muted);text-align:center;
+  }
+  .chat-foot b{color:var(--accent);font-weight:700}
+  .scene-side{display:flex;flex-direction:column;gap:14px}
+  .scene-stat{
+    border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:18px 20px;
+  }
+  .scene-stat .n{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--accent);line-height:1.15}
+  .scene-stat .n span{font-size:14px;color:var(--muted);font-weight:500}
+  .scene-stat p{font-size:12.8px;color:var(--muted);margin-top:6px}
+  .scene-stat.alt .n{color:var(--blue)}
+  .scene-note{
+    border:1px dashed var(--line2);border-radius:13px;padding:16px 18px;
+    font-size:12.8px;color:var(--muted);
+  }
+  .scene-note b{color:var(--txt)}
+
+  /* ---------- comparison table ---------- */
+  .tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13.8px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:13px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl thead th{
+    background:var(--panel2);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    border-bottom:1px solid var(--line2);
+  }
+  .tbl thead th.c-us{color:var(--accent)}
+  .tbl thead th.c-them{color:var(--blue)}
+  .tbl td.dim{color:var(--dim);font-weight:600;width:15%;background:rgba(148,163,184,.03)}
+  .tbl td.them{color:var(--muted);background:rgba(96,165,250,.03);width:37%}
+  .tbl td.us{background:rgba(52,211,153,.05);width:48%}
+  .tbl td.us b{color:var(--accent);font-weight:650}
+  .tbl td.them b{color:var(--blue);font-weight:650}
+  .pos-note{
+    margin-top:20px;display:flex;gap:14px;align-items:flex-start;
+    background:var(--blue-dim);border:1px solid rgba(96,165,250,.25);border-radius:12px;padding:18px 22px;
+  }
+  .pos-note .i{font-size:18px;line-height:1.4}
+  .pos-note p{font-size:14px;color:var(--muted)}
+  .pos-note p strong{color:var(--txt)}
+
+  /* ---------- brain ---------- */
+  .brain-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px}
+  .quote-box{
+    border:1px solid var(--accent-line);border-radius:14px;padding:26px 28px;
+    background:linear-gradient(150deg,rgba(52,211,153,.07),var(--panel));
+  }
+  .quote-box .q1{font-size:21px;font-weight:700;line-height:1.35;margin-bottom:14px}
+  .quote-box .q1 em{color:var(--accent);font-style:normal}
+  .quote-box p{color:var(--muted);font-size:14px;margin-bottom:12px}
+  .quote-box p:last-child{margin-bottom:0}
+  .quote-box strong{color:var(--txt)}
+  .layers{display:flex;flex-direction:column;gap:10px}
+  .layer{border:1px solid var(--line);border-radius:11px;padding:14px 18px;background:var(--panel);display:flex;gap:16px;align-items:flex-start}
+  .layer .tag{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 9px;border-radius:6px;white-space:nowrap;margin-top:2px;
+  }
+  .layer.l1 .tag{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-line)}
+  .layer.l2 .tag{background:rgba(96,165,250,.1);color:var(--blue);border:1px solid rgba(96,165,250,.3)}
+  .layer.l3 .tag{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+  .layer.l4 .tag{background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.3)}
+  .layer h5{font-size:14px;margin-bottom:3px}
+  .layer p{font-size:13px;color:var(--muted)}
+  .layer p b{color:var(--txt)}
+
+  /* self-improving loop */
+  .loop{margin-top:26px;border:1px dashed var(--line2);border-radius:14px;padding:22px 26px}
+  .loop h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .loop ol{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:step}
+  .loop li{
+    counter-increment:step;position:relative;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:14px 12px 12px;font-size:12.5px;color:var(--muted);line-height:1.5;
+  }
+  .loop li::before{
+    content:counter(step);position:absolute;top:-10px;left:10px;
+    font-family:var(--mono);font-size:11px;font-weight:700;
+    background:var(--accent);color:#04110b;width:20px;height:20px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .loop li b{display:block;color:var(--txt);font-size:12.8px;margin-bottom:2px}
+  .loop li:not(:last-child)::after{
+    content:'→';position:absolute;right:-12px;top:40%;color:var(--accent);font-size:13px;z-index:2;
+  }
+
+  /* learning curve */
+  .curve{margin-top:26px;border:1px solid var(--accent-line);border-radius:15px;background:var(--panel);padding:24px 26px 18px}
+  .curve h4{font-size:15.5px;font-weight:700;margin-bottom:2px}
+  .curve .cap{font-size:12.8px;color:var(--muted);margin-bottom:14px}
+  .curve svg{width:100%;height:auto;display:block}
+  .curve .legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;padding-top:12px;border-top:1px solid var(--line)}
+  .curve .legend span{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .lg-line{width:22px;height:3px;border-radius:2px;background:var(--accent)}
+  .lg-dash{width:22px;height:0;border-top:2.5px dashed var(--dim)}
+  .curve .foot{font-size:12.3px;color:var(--dim);margin-top:10px}
+  .curve .foot b{color:var(--accent)}
+
+  /* ---------- scenarios ---------- */
+  .scen-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .scen{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column}
+  .scen-head{padding:16px 20px 13px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+  .scen-head .ico{
+    width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-size:17px;background:var(--accent-dim);border:1px solid var(--accent-line);flex-shrink:0;
+  }
+  .scen-head h4{font-size:15px;font-weight:650}
+  .scen-head .cat{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+  .scen-body{padding:14px 20px 18px;flex:1;display:flex;flex-direction:column;gap:10px}
+  .scen-row{display:grid;grid-template-columns:64px 1fr;gap:12px;font-size:13px}
+  .scen-row .lbl{
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:center;
+    align-self:flex-start;padding:3px 0;border-radius:5px;margin-top:2px;
+  }
+  .lbl.now{background:rgba(148,163,184,.1);color:var(--dim)}
+  .lbl.goal{background:var(--accent-dim);color:var(--accent)}
+  .scen-row .now-t{color:var(--muted)}
+  .scen-row .goal-t{color:var(--txt)}
+  .scen-row .goal-t b{color:var(--accent);font-weight:650}
+  .scen-foot{
+    margin:auto 20px 18px;padding:9px 14px;border-radius:9px;
+    background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);
+    font-family:var(--mono);font-size:12px;color:var(--accent);
+  }
+  .scen-foot span{color:var(--dim);font-family:var(--sans)}
+
+  /* ---------- architecture ---------- */
+  .arch{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:26px}
+  .arch-flow{display:flex;flex-direction:column;gap:0}
+  .node-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .anode{
+    border-radius:11px;padding:12px 18px;text-align:center;min-width:160px;
+    border:1px solid var(--line2);background:var(--panel2);position:relative;
+  }
+  .anode .t{font-size:13.5px;font-weight:650}
+  .anode .d{font-size:11px;color:var(--dim);margin-top:2px}
+  .anode.trigger{border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.07)}
+  .anode.core{border-color:var(--accent-line);background:linear-gradient(150deg,rgba(52,211,153,.1),var(--panel2));padding:18px 30px;min-width:420px;max-width:660px}
+  .anode.core .t{color:var(--accent);font-size:15px}
+  .anode.core .inner{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .anode.core .chip{
+    font-family:var(--mono);font-size:10.5px;padding:4px 10px;border-radius:6px;
+    background:rgba(52,211,153,.1);border:1px solid var(--accent-line);color:var(--accent);
+  }
+  .anode.target{border-color:var(--line2)}
+  .anode.obs{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05)}
+  .connector{text-align:center;color:var(--accent);font-size:16px;line-height:1;padding:8px 0}
+  .connector .lbl{
+    display:inline-block;font-family:var(--mono);font-size:10.5px;color:var(--muted);
+    background:var(--panel2);border:1px solid var(--line2);border-radius:999px;padding:3px 12px;margin-left:10px;
+  }
+  .arch-note{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .an{border:1px solid var(--line);border-radius:10px;padding:12px 16px;background:var(--panel2);font-size:12.5px;color:var(--muted)}
+  .an b{color:var(--txt);display:block;font-size:12.8px;margin-bottom:2px}
+
+  /* ---------- permissions table ---------- */
+  .perm{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .perm th{background:var(--panel2);text-align:left;padding:11px 16px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line2)}
+  .perm td{padding:11px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  .perm tr:last-child td{border-bottom:none}
+  .perm td:first-child{font-weight:600}
+  .perm td:nth-child(2){color:var(--muted)}
+  .badge{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 10px;border-radius:6px;letter-spacing:.05em;white-space:nowrap}
+  .badge.r{background:rgba(52,211,153,.1);color:var(--accent);border:1px solid var(--accent-line)}
+  .badge.rw{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(251,191,36,.3)}
+  .badge.no{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.25)}
+  .perm-note{margin-top:14px;font-size:13px;color:var(--muted)}
+  .perm-note b{color:var(--amber)}
+
+  /* ---------- controls ---------- */
+  .ctrl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .ctrl{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:20px}
+  .ctrl .ico{font-size:20px;margin-bottom:10px}
+  .ctrl h4{font-size:14.5px;margin-bottom:8px}
+  .ctrl p{font-size:12.8px;color:var(--muted)}
+  .ctrl p b{color:var(--txt)}
+  .ctrl .snippet{
+    margin-top:12px;font-family:var(--mono);font-size:11px;line-height:1.8;
+    background:#0a0f14;border:1px solid var(--line);border-radius:8px;padding:11px 14px;color:var(--muted);overflow-x:auto;
+  }
+  .snippet .ok{color:var(--accent)}
+  .snippet .bad{color:var(--red)}
+  .snippet .wr{color:var(--amber)}
+
+  /* ---------- roadmap ---------- */
+  .phases{position:relative;padding-left:34px}
+  .phases::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),rgba(52,211,153,.15))}
+  .phase{position:relative;padding:0 0 26px 18px}
+  .phase:last-child{padding-bottom:0}
+  .phase::before{
+    content:'';position:absolute;left:-31px;top:5px;width:16px;height:16px;border-radius:50%;
+    background:var(--panel);border:2px solid var(--accent);z-index:2;
+  }
+  .phase.done::before{background:var(--accent);box-shadow:0 0 12px rgba(52,211,153,.5)}
+  .phase .ph-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase}
+  .phase.done .ph-tag{color:var(--accent)}
+  .phase h4{font-size:15.5px;margin:2px 0 4px}
+  .phase p{font-size:13px;color:var(--muted);max-width:700px}
+  .phase .ph-out{display:inline-block;margin-top:7px;font-size:12px;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-line);border-radius:7px;padding:3px 11px;font-family:var(--mono)}
+  .roadmap-note{
+    margin-top:26px;border:1px dashed var(--line2);border-radius:12px;padding:16px 20px;
+    font-size:13.3px;color:var(--muted);
+  }
+  .roadmap-note b{color:var(--accent)}
+
+  /* ---------- outcomes ---------- */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:26px}
+  .kpi{border:1px solid var(--line);border-radius:13px;padding:22px 20px;background:linear-gradient(160deg,var(--panel),var(--panel2))}
+  .kpi .big{font-size:34px;font-weight:800;letter-spacing:-.02em;color:var(--accent);line-height:1.1;font-variant-numeric:tabular-nums}
+  .kpi .big .suffix{font-size:16px;color:var(--accent);opacity:.75}
+  .kpi .cmp{font-family:var(--mono);font-size:11px;color:var(--dim);margin:6px 0 10px}
+  .kpi p{font-size:12.5px;color:var(--muted)}
+  .gain-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .gain{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:14px 17px;background:var(--panel)}
+  .gain .i{color:var(--accent);font-size:15px;line-height:1.5}
+  .gain p{font-size:13.3px;color:var(--muted)}
+  .gain p b{color:var(--txt);display:block;font-size:13.6px}
+
+  /* ---------- dev gains strip ---------- */
+  .dev-block{margin:32px 0 10px;border:1px solid var(--accent-line);border-radius:16px;background:linear-gradient(160deg,rgba(52,211,153,.07),var(--panel));padding:26px 28px}
+  .dev-block h3{font-size:19px;font-weight:750;margin-bottom:4px}
+  .dev-block .dev-cap{font-size:13.5px;color:var(--muted);margin-bottom:20px}
+  .dev-block .dev-cap strong{color:var(--txt)}
+  .dev-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+  .dstep{border:1px solid var(--line);border-radius:11px;background:var(--panel2);padding:12px 13px;position:relative}
+  .dstep .ds-t{font-size:13px;font-weight:650;margin-bottom:7px;padding-left:24px;position:relative}
+  .dstep .ds-t::before{
+    content:'✓';position:absolute;left:0;top:1px;font-size:11px;color:var(--accent);
+  }
+  .dstep .ds-row{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;margin-top:4px}
+  .dstep .ds-row .was{color:var(--dim)}
+  .dstep .ds-row .now2{color:var(--accent);font-weight:650;font-family:var(--mono)}
+  .dstep .ds-d{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.45}
+  .dstep .ds-d b{color:var(--txt)}
+  .dev-total{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    border-top:1px dashed var(--line2);padding-top:14px;
+  }
+  .dev-total .dt-lbl{font-size:13px;color:var(--muted)}
+  .dev-total .dt-lbl b{color:var(--txt)}
+  .dev-total .dt-nums{display:flex;align-items:center;gap:10px;font-family:var(--mono)}
+  .dev-total .dt-old{font-size:13px;color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(248,113,113,.6)}
+  .dev-total .dt-arrow{color:var(--accent)}
+  .dev-total .dt-new{font-size:20px;font-weight:800;color:var(--accent)}
+  .dev-gains{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  .dg{border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:var(--panel)}
+  .dg .dg-i{font-size:15px;margin-bottom:6px}
+  .dg p{font-size:12.7px;color:var(--muted)}
+  .dg p b{color:var(--txt);display:block;font-size:13.2px;margin-bottom:2px}
+
+  /* ---------- why now ---------- */
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .why{border:1px solid var(--accent-line);border-radius:14px;padding:24px 22px;background:linear-gradient(160deg,rgba(52,211,153,.06),var(--panel))}
+  .why .wn{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;margin-bottom:10px}
+  .why h4{font-size:16.5px;margin-bottom:8px;line-height:1.35}
+  .why p{font-size:13.2px;color:var(--muted)}
+  .why p b{color:var(--txt)}
+
+  /* ---------- closing ---------- */
+  .closing{background:
+    radial-gradient(600px 240px at 20% 0%,rgba(52,211,153,.09),transparent 60%),
+    radial-gradient(500px 220px at 80% 100%,rgba(96,165,250,.06),transparent 60%);
+    border-bottom:none;
+  }
+  .closing .wrap{padding:72px 28px 56px}
+  .closing h2{font-size:32px;margin-bottom:12px;line-height:1.25}
+  .closing h2 em{font-style:normal;color:var(--accent)}
+  .closing .sec-lede{margin-bottom:30px;font-size:16.5px}
+  .close-cards{display:flex;gap:14px;flex-wrap:wrap}
+  .close-card{
+    flex:1;min-width:220px;border:1px solid var(--line2);border-radius:13px;padding:18px 20px;
+    background:var(--panel);
+  }
+  .close-card .ck{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+  .close-card p{font-size:14.5px;font-weight:650}
+  .close-card p span{display:block;font-size:12.5px;color:var(--muted);font-weight:400;margin-top:4px}
+  footer{padding:30px 0;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  footer p{font-size:12.5px;color:var(--dim)}
+  footer .mono{font-family:var(--mono);color:var(--accent)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .brain-grid,.scen-grid,.ctrl-grid,.gain-list,.why-grid,.dev-gains{grid-template-columns:1fr}
+    .scene-wrap{grid-template-columns:1fr}
+    .kpi-grid{grid-template-columns:1fr 1fr}
+    .arch-note{grid-template-columns:1fr}
+    .dev-steps{grid-template-columns:1fr}
+    .loop ol{grid-template-columns:1fr;gap:16px}
+    .loop li:not(:last-child)::after{content:'↓';right:auto;left:16px;top:100%;margin-top:2px}
+    .ba{grid-template-columns:1fr}
+    .ba-arrow{transform:rotate(90deg);padding:8px 0}
+    h1{font-size:31px}
+    .closing h2{font-size:25px}
+    .tbl{font-size:12.5px}
+    .tbl td.dim,.tbl td.them,.tbl td.us{width:auto}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .topbar{display:none}
+    section{page-break-inside:avoid}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAV ============ -->
+<div class="topbar">
+  <div class="wrap">
+    <span class="brand">MrRobot</span>
+    <nav>
+      <a href="#scene">Live Scene</a>
+      <a href="#edge">Our Edge</a>
+      <a href="#brain">The Brain</a>
+      <a href="#scenarios">Scenarios</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#security">Security</a>
+      <a href="#gains">Gains</a>
+      <a href="#why-now">Why Now</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="pill"><span class="dot"></span> Data Analytics · R&D · 2026</div>
+    <h1>A digital engineer who never tires, never forgets,<br>stands by your team day and night - and<br><em>learns from every single task.</em></h1>
+    <p class="sub">
+      <strong>MrRobot</strong> is a digital teammate that runs our data team's daily work around the clock.
+      When something breaks, it acts before anyone calls it, resolves the issue, and brings the fix to us for approval.
+      Everything it learns is written to its persistent memory; with every new task it works faster than the last.
+      It measures and proves its progress with weekly test scores.
+    </p>
+    <div class="hero-meta">
+      <div class="hm"><div class="k">Mode of Operation</div><div class="v">day and night, self-initiated</div></div>
+      <div class="hm"><div class="k">Learning</div><div class="v">persistent and measurable</div></div>
+      <div class="hm"><div class="k">Model Dependency</div><div class="v">none - the brain survives model changes</div></div>
+      <div class="hm"><div class="k">Cost</div><div class="v">low - a thin layer on a proven skeleton</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 · INTENT ============ -->
+<section id="intent">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">01 - INTENT</div>
+      <h2>What we do, in one sentence</h2>
+    </div>
+    <div class="intent">
+      <div class="q">❝</div>
+      <p>
+        We are building a digital teammate that automates a data engineer's daily work, learns from what it does,
+        and comes to a human for approval at critical steps. Today, with every task, we explain everything to AI from scratch.
+        This system accumulates the team's knowledge.
+        <strong>Just as a new hire gains seniority over time, so does this system.</strong>
+      </p>
+    </div>
+    <div class="ba">
+      <div class="ba-col today">
+        <h4>Today - what do we have?</h4>
+        <ul>
+          <li>AI can already see our code, our tasks, our databases and our servers.</li>
+          <li>It performs many operations on our behalf, faster than we do.</li>
+          <li>But every conversation starts from zero; experience is lost when the chat closes.</li>
+          <li>The system only works when someone calls it; it does not catch events on its own.</li>
+        </ul>
+      </div>
+      <div class="ba-arrow">➜</div>
+      <div class="ba-col tmrw">
+        <h4>Goal - what do we gain?</h4>
+        <ul>
+          <li>Everything it learns is persistent: which tables feed which report, how each error is fixed.</li>
+          <li>When an error occurs, it catches it, investigates it, and brings the fix to us for approval.</li>
+          <li>It works faster and more accurately with every task; it measures its progress with a weekly score.</li>
+          <li>Every critical step passes through human approval; everything is logged and reversible.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · LIVE SCENE ============ -->
+<section id="scene">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02 - LIVE SCENE</div>
+      <h2>It's 03:07 AM. The team is asleep. MrRobot is up.</h2>
+      <p class="sec-lede">
+        This is our target scenario rendered on screen. An error occurs during the night; the system catches it on its own,
+        investigates it, and verifies the fix. The human steps in at exactly one point: <strong>the decision.</strong>
+      </p>
+    </div>
+    <div class="scene-wrap">
+      <div class="chat">
+        <div class="chat-head">
+          <span class="chat-app"><span class="cdot"></span>Teams - Data Team Channel</span>
+          <span class="chat-live">representative flow · target output</span>
+        </div>
+        <div class="chat-body">
+          <div class="chat-time"><span>03:02</span></div>
+          <div class="msg sys">
+            <div class="avatar s">HI</div>
+            <div class="bubble">
+              <div class="who"><b>ERROR MONITOR</b> → MrRobot <span class="tagchip">instant alert · self-triggered</span></div>
+              <p>Nightly data pipeline stopped: <span class="code">date format error</span> (Project-2)</p>
+            </div>
+          </div>
+          <div class="msg bot">
+            <div class="avatar h">HE</div>
+            <div class="bubble">
+              <div class="who"><b>MrRobot</b></div>
+              <p>I caught the error; starting the investigation right away.</p>
+              <div class="steps"><span>Logs reviewed</span><span>Schema change found</span><span>Root cause identified</span></div>
+            </div>
+          </div>
+          <div class="chat-time"><span>03:39</span></div>
+          <div class="msg bot">
+            <div class="avatar h">HE</div>
+            <div class="bubble">
+              <div class="who"><b>MrRobot</b></div>
+              <p><b>Root cause:</b> The format of a date field in the source table changed. That is why the nightly pipeline stopped.</p>
+              <p><b>Fix ready:</b> I wrote the correction and added a new test that catches this exact error.
+              All checks are green: <span class="vpass">code quality ✓ · 42 tests ✓ · security scan ✓</span>
+              Risk is low; it can be rolled back with a single command if needed.</p>
+              <p>If you approve, I will deploy to the test environment and restart the pipeline.</p>
+            </div>
+          </div>
+          <div class="chat-time"><span>08:54</span></div>
+          <div class="msg me">
+            <div class="avatar m">MK</div>
+            <div class="bubble">
+              <div class="who"><b>METIN</b></div>
+              <p>approve</p>
+            </div>
+          </div>
+          <div class="msg bot">
+            <div class="avatar h">HE</div>
+            <div class="bubble">
+              <div class="who"><b>MrRobot</b> · 08:55</div>
+              <p>Deployment complete, the pipeline is running again: <b>1,248,310 rows</b> processed and reports are ready on time.
+              I have saved this solution as a method. From now on, this type of error is resolved in about <b>15 minutes</b>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-foot">The team slept for 6 hours. Total human effort: <b>one word.</b></div>
+      </div>
+      <div class="scene-side">
+        <div class="scene-stat">
+          <div class="n">5 h 53 min</div>
+          <p>The system started working the moment the error occurred. The fix was ready for approval without waiting for anyone.</p>
+        </div>
+        <div class="scene-stat alt">
+          <div class="n">1 word</div>
+          <p>The only contribution from the team that morning was "approve". The analysis, verification, deployment and report were all done by the system.</p>
+        </div>
+        <div class="scene-note">
+          <b>The real message is in the last sentence:</b> "I have saved this as a method."
+          The system did not just fix this error; it <b>learned how to fix it</b>.
+          From now on, every task speeds up the next one.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · THE EDGE ============ -->
+<section id="edge">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">03 - POSITIONING</div>
+      <h2>You already know AI Coder. What makes us different?</h2>
+      <p class="sec-lede">
+        AI Coder is a platform where developers open coding tasks and receive an approved code change.
+        MrRobot answers a different question: <strong>a system that carries the department's work from event to outcome
+        without waiting for anyone, and gets faster with every job.</strong>
+      </p>
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:15%">Dimension</th>
+          <th class="c-them" style="width:37%">AI Coder (platform)</th>
+          <th class="c-us" style="width:48%">MrRobot (our R&D)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dim">What is it?</td>
+          <td class="them">A web platform where developers open tasks; a task becomes an approved code change.</td>
+          <td class="us"><b>A digital team member that lives alongside the department;</b> it carries the work from end to end itself.</td>
+        </tr>
+        <tr>
+          <td class="dim">Who initiates?</td>
+          <td class="them">The user opens a task; the system only works when called.</td>
+          <td class="us"><b>The system acts on its own:</b> it springs into action when an error alert, a new request or a scheduled job arrives.</td>
+        </tr>
+        <tr>
+          <td class="dim">Scope</td>
+          <td class="them">Covers software development tasks.</td>
+          <td class="us"><b>Covers whatever the team does:</b> overnight errors, report preparation, data pipeline enhancements, release checks.</td>
+        </tr>
+        <tr>
+          <td class="dim">Memory</td>
+          <td class="them">Accumulated knowledge remains limited once the task ends.</td>
+          <td class="us"><b>Everything it learns is persistent</b> and recalled in every new task. All past conversations are searchable.</td>
+        </tr>
+        <tr>
+          <td class="dim">Learning</td>
+          <td class="them">Applies quality checks on every task.</td>
+          <td class="us"><b>It saves the methods that work by itself;</b> it measures its progress with weekly tests and reverts when needed.</td>
+        </tr>
+        <tr>
+          <td class="dim">Domain knowledge</td>
+          <td class="them">Carries general software engineering knowledge.</td>
+          <td class="us"><b>It knows our data world:</b> our report definitions, our table relationships and the team's fix history.</td>
+        </tr>
+        <tr>
+          <td class="dim">Server access</td>
+          <td class="them">Accesses code repositories within the platform.</td>
+          <td class="us"><b>Accesses servers with temporary credentials over a secure tunnel;</b> it never stores a permanent password anywhere.</td>
+        </tr>
+        <tr>
+          <td class="dim">Size</td>
+          <td class="them">A large platform of seven separate parts, heavy to maintain.</td>
+          <td class="us"><b>A thin layer on a proven skeleton:</b> small team, fast development, low maintenance.</td>
+        </tr>
+        <tr>
+          <td class="dim">Outcome</td>
+          <td class="them">Produces an approved code change.</td>
+          <td class="us"><b>Produces an end-to-end result:</b> "The error was this, I applied the fix and verified it. If you approve, I will release it."</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pos-note">
+      <div class="i">🤝</div>
+      <p>
+        <strong>These two systems are not rivals; they complement each other.</strong>
+        AI Coder is a tool that gives work to AI. MrRobot is a system that runs AI and teaches it.
+        What MrRobot produces cannot be copied: <strong>an institutional memory that grows over time, and operations that run without waiting for a human.</strong>
+        Shared components can be exchanged between the two systems later on.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · THE BRAIN ============ -->
+<section id="brain">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">04 - HEART OF THE DIFFERENCE</div>
+      <h2>"Intelligence" is something anyone can buy. The difference lies in "wisdom."</h2>
+    </div>
+    <div class="brain-grid">
+      <div class="quote-box">
+        <div class="q1">Intelligence changes. <em>Wisdom stays with us.</em></div>
+        <p>
+          Sentences like "this report comes from the join of these three tables" or "this error was fixed this way last month"
+          exist in no AI model's knowledge. This is <strong>our team's lived experience</strong>,
+          and today it is lost the moment a chat closes.
+        </p>
+        <p>
+          MrRobot writes this knowledge into persistent files. It saves every method that works, by itself.
+          The entire brain is kept in <strong>a repository where every change is tracked and reversible</strong>:
+          every learning is a record; a wrong learning is reverted with a single command.
+          <strong>Even if the model changes tomorrow, the brain stays in place;</strong> a stronger model does better work with the same accumulation.
+        </p>
+      </div>
+      <div class="layers">
+        <div class="layer l1">
+          <span class="tag">Character</span>
+          <div><h5>Identity and rules</h5><p>Loaded into every conversation. The system's personality, priorities and <b>immutable security rules</b> are defined here.</p></div>
+        </div>
+        <div class="layer l2">
+          <span class="tag">Summary</span>
+          <div><h5>Small memory card</h5><p>A summary of what is known is <b>ready in every conversation</b>. Details are loaded from files when needed.</p></div>
+        </div>
+        <div class="layer l2">
+          <span class="tag">Knowledge</span>
+          <div><h5>Knowledge files</h5><p>Report recipes, table relationships and project notes live here. Every file records its <b>date, source and confidence level</b>.</p></div>
+        </div>
+        <div class="layer l3">
+          <span class="tag">Methods</span>
+          <div><h5>Learned solution paths</h5><p>The methods that work. The system <b>writes them itself</b> and recalls them in later tasks.</p></div>
+        </div>
+        <div class="layer l4">
+          <span class="tag">Archive</span>
+          <div><h5>Searchable conversation history</h5><p>All past conversations are recorded and <b>searchable in full text.</b></p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loop">
+      <h4>Self-improvement loop - measurable and reversible</h4>
+      <ol>
+        <li><b>A task arrives</b>The system is triggered by a message, an error alert or a scheduled job.</li>
+        <li><b>It checks its memory</b>It first consults its own accumulation; if something is missing, it asks the source systems.</li>
+        <li><b>It does the work</b>It analyzes, writes the code, and passes it through the verification gate.</li>
+        <li><b>It saves what it learned</b>It automatically writes the new knowledge and the working method into its files.</li>
+        <li><b>It gets measured</b>A weekly test suite runs; if the score drops, the latest changes are reverted.</li>
+      </ol>
+    </div>
+
+    <div class="curve">
+      <h4>Compound learning: every task speeds up the next</h4>
+      <p class="cap">What happens to resolution time as the same kind of job recurs? The difference between a system with memory and a memoryless tool is shown below:</p>
+      <svg viewBox="0 0 560 250" role="img" aria-label="Compound learning curve">
+        <defs>
+          <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(52,211,153,.28)"/>
+            <stop offset="100%" stop-color="rgba(52,211,153,0)"/>
+          </linearGradient>
+        </defs>
+        <!-- grid -->
+        <g stroke="rgba(148,163,184,.1)" stroke-width="1">
+          <line x1="50" y1="30" x2="530" y2="30"/>
+          <line x1="50" y1="85" x2="530" y2="85"/>
+          <line x1="50" y1="140" x2="530" y2="140"/>
+          <line x1="50" y1="195" x2="530" y2="195"/>
+        </g>
+        <!-- axes -->
+        <line x1="50" y1="20" x2="50" y2="195" stroke="rgba(148,163,184,.35)" stroke-width="1.5"/>
+        <line x1="50" y1="195" x2="530" y2="195" stroke="rgba(148,163,184,.35)" stroke-width="1.5"/>
+        <!-- y labels -->
+        <g font-family="ui-monospace,monospace" font-size="9.5" fill="#5d6b7d">
+          <text x="8" y="33">4 h</text>
+          <text x="8" y="88">2 h</text>
+          <text x="8" y="143">45 min</text>
+          <text x="8" y="198">10 min</text>
+          <text x="8" y="215" font-size="8.5">time →</text>
+        </g>
+        <!-- x labels -->
+        <g font-family="ui-monospace,monospace" font-size="9.5" fill="#5d6b7d" text-anchor="middle">
+          <text x="60" y="213">1st job</text>
+          <text x="200" y="213">20th job</text>
+          <text x="360" y="213">100th job</text>
+          <text x="510" y="213">500th job</text>
+        </g>
+        <!-- flat reference: memoryless tool -->
+        <path d="M 60 55 L 520 55" stroke="#5d6b7d" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+        <text x="516" y="48" font-family="ui-monospace,monospace" font-size="10" fill="#8b98a9" text-anchor="end">memoryless tool - same time every job</text>
+        <!-- hermes curve -->
+        <path d="M 60 30 C 140 32, 165 130, 250 160 C 330 187, 430 190, 520 191"
+              stroke="#34d399" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M 60 30 C 140 32, 165 130, 250 160 C 330 187, 430 190, 520 191 L 520 195 L 60 195 Z"
+              fill="url(#area)" stroke="none"/>
+        <!-- dots -->
+        <g fill="#34d399">
+          <circle cx="60" cy="30" r="5"/>
+          <circle cx="250" cy="160" r="5"/>
+          <circle cx="520" cy="191" r="5"/>
+        </g>
+        <circle cx="60" cy="30" r="9" fill="none" stroke="rgba(52,211,153,.4)"/>
+        <circle cx="250" cy="160" r="9" fill="none" stroke="rgba(52,211,153,.4)"/>
+        <circle cx="520" cy="191" r="9" fill="none" stroke="rgba(52,211,153,.4)"/>
+        <!-- annotations -->
+        <g font-family="ui-monospace,monospace" font-size="10" fill="#e6edf3">
+          <text x="78" y="26">1st job: 4 hours</text>
+          <text x="268" y="156">20th job: half an hour</text>
+          <text x="512" y="176" text-anchor="end">500th job: 10 minutes</text>
+        </g>
+      </svg>
+      <div class="legend">
+        <span><span class="lg-line"></span> MrRobot: learns and speeds up</span>
+        <span><span class="lg-dash"></span> Memoryless tool: every job starts from scratch</span>
+      </div>
+      <p class="foot">The area between the two lines is <b>time gained, compounding.</b> This accumulation belongs to our repository, not to the model. Even if the model changes, the curve stays put.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · SCENARIOS ============ -->
+<section id="scenarios">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">05 - IMPACT ON DAILY WORK</div>
+      <h2>Four scenarios, one pattern: the routine goes away, the decision stays.</h2>
+    </div>
+    <div class="scen-grid">
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">🌙</div>
+          <div><div class="cat">Operations</div><h4>03:00 AM - data pipeline failure</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Today</span><div class="now-t">We notice the error when we get to work in the morning. We open the logs, find the cause, fix it and rerun the pipeline. It costs us half a day; reports are delayed.</div></div>
+          <div class="scen-row"><span class="lbl goal">Goal</span><div class="goal-t">The system catches the error instantly and verifies the fix in the test environment. In the morning, a single message awaits us: <b>"If you approve, I will release it."</b> See the live scene above.</div></div>
+        </div>
+        <div class="scen-foot">Error response: <span>from hours down to minutes</span></div>
+      </div>
+
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">📊</div>
+          <div><div class="cat">Analysis</div><h4>Report request from the business unit</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Today</span><div class="now-t">The business unit asks for a report. Finding the right tables, definitions and filters costs us a day or two; then we write the query.</div></div>
+          <div class="scen-row"><span class="lbl goal">Goal</span><div class="goal-t">The system consults the data catalog and past solutions and says: <b>"This report comes from these three tables. The 'missing' definition was done this way in a previous report; I am reusing it."</b> On the next similar request, research time is zero.</div></div>
+        </div>
+        <div class="scen-foot">Report preparation: <span>from days down to hours</span></div>
+      </div>
+
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">⚙️</div>
+          <div><div class="cat">Development</div><h4>Adding a new source table</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Today</span><div class="now-t">We inspect the schema, write the ingestion code, test it, document it and release it. The job takes two to three days.</div></div>
+          <div class="scen-row"><span class="lbl goal">Goal</span><div class="goal-t">The system takes the team's previous similar pipelines as its example. It prepares the code, the test and the documentation, and passes them through the verification gate. <b>The team's standards are applied automatically;</b> all that is left for us is the review.</div></div>
+        </div>
+        <div class="scen-foot">Development: <span>from days down to hours</span></div>
+      </div>
+
+      <div class="scen">
+        <div class="scen-head">
+          <div class="ico">🧠</div>
+          <div><div class="cat">Institutional memory</div><h4>"Why is this table calculated this way?"</h4></div>
+        </div>
+        <div class="scen-body">
+          <div class="scen-row"><span class="lbl now">Today</span><div class="now-t">The answer usually lives in one person's head. If that person is on leave or leaves the company, the knowledge is lost.</div></div>
+          <div class="scen-row"><span class="lbl goal">Goal</span><div class="goal-t">Every solved problem and every learned definition is recorded and searchable. <b>Knowledge belongs to the team, not to an individual;</b> a new hire and the system learn from the same source.</div></div>
+        </div>
+        <div class="scen-foot">Institutional memory: <span>moves from the person to the repository</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 · ARCHITECTURE ============ -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">06 - ARCHITECTURE</div>
+      <h2>One central brain, an isolated server that cannot be entered from outside.</h2>
+      <p class="sec-lede">
+        The system runs on a single, isolated server. The brain lives in a repository where every change is tracked;
+        <strong>even if the server is lost, the knowledge is not.</strong>
+      </p>
+    </div>
+    <div class="arch">
+      <div class="arch-flow">
+        <div class="node-row">
+          <div class="anode trigger"><div class="t">Teams</div><div class="d">requests, approvals, feedback</div></div>
+          <div class="anode trigger"><div class="t">Error monitoring</div><div class="d">instant error alerts</div></div>
+          <div class="anode trigger"><div class="t">Jira</div><div class="d">requests and status</div></div>
+          <div class="anode trigger"><div class="t">Scheduled jobs</div><div class="d">nightly checks, tests</div></div>
+        </div>
+        <div class="connector">▼ <span class="lbl">no inbound connections accepted</span></div>
+        <div class="node-row">
+          <div class="anode core">
+            <div class="t">CENTRAL SERVER - MrRobot (24/7)</div>
+            <div class="d">isolated machine · unreachable from outside · entire brain in a versioned repository</div>
+            <div class="inner">
+              <span class="chip">character + rules</span>
+              <span class="chip">memory card</span>
+              <span class="chip">knowledge files</span>
+              <span class="chip">methods</span>
+              <span class="chip">safety gate</span>
+              <span class="chip">scheduled jobs</span>
+              <span class="chip">task delegation</span>
+            </div>
+          </div>
+        </div>
+        <div class="connector">▼ <span class="lbl">temporary credentials and a secure tunnel · no stored passwords</span></div>
+        <div class="node-row">
+          <div class="anode target"><div class="t">AWS environments</div><div class="d">servers and data lakes · no open doors from outside</div></div>
+          <div class="anode target"><div class="t">Data catalog + data warehouse</div><div class="d">queried live every time</div></div>
+          <div class="anode obs"><div class="t">Error monitoring (separate server)</div><div class="d">read-only access</div></div>
+        </div>
+      </div>
+      <div class="arch-note">
+        <div class="an"><b>Deployment requires approval</b>The team approves; the system receives temporary credentials, deploys and reports the result.</div>
+        <div class="an"><b>Every step is logged</b>Every operation the system performs is written to a log; auditing is always possible.</div>
+        <div class="an"><b>Observer stays separate</b>The system that collects errors and the system that diagnoses them run on separate machines; access is read-only.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 · SECURITY ============ -->
+<section id="security">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">07 - SECURITY DESIGN</div>
+      <h2>Controls live at the code level; we trust what the system does, not what it says.</h2>
+      <p class="sec-lede">
+        Acceptance of such a system inside the organization depends on a single condition: <strong>there must be strict boundaries on what it can do.</strong>
+        This boundary is built with three fixed gates:
+      </p>
+    </div>
+    <div class="ctrl-grid">
+      <div class="ctrl">
+        <div class="ico">🛡️</div>
+        <h4>Safety Gate</h4>
+        <p>A rule written into the system's prompt can be forgotten; <b>the code-level barrier does not forget.</b> Every command is automatically checked before it runs:</p>
+        <div class="snippet">"delete the customer table"        → <span class="bad">AUTO-BLOCK</span><br>"connect to prod and shut it down" → <span class="wr">HUMAN APPROVAL REQUIRED</span><br>"run it in the test environment"   → <span class="ok">ALLOWED</span></div>
+      </div>
+      <div class="ctrl">
+        <div class="ico">✅</div>
+        <h4>Verification Gate</h4>
+        <p>Before the system can say "if you approve, I will release it", it must first pass these five checks:</p>
+        <div class="snippet">1. code quality check<br>2. type-safety check<br>3. full test suite<br>4. secret scanning<br>5. summary + risk level<br><br>→ if all five are green it asks for approval;<br>   otherwise it <span class="bad">stays quiet and fixes it</span></div>
+      </div>
+      <div class="ctrl">
+        <div class="ico">📈</div>
+        <h4>Measurement</h4>
+        <p>The claim "it improves itself" is never left unproven. A fixed test set <b>runs automatically every week:</b></p>
+        <div class="snippet">test: diagnose one error<br>scoring (rubric 1-5):<br>  · is the root cause correct?<br>  · is the fix actionable?<br>  · are risk and environment stated?<br>  · is the approval step preserved?<br><br>if the score drops → recent changes<br><span class="wr">are reverted automatically</span></div>
+      </div>
+    </div>
+
+    <h2 style="font-size:20px;margin:36px 0 18px">Access scope: to what, for what purpose, how much permission?</h2>
+    <table class="perm">
+      <thead>
+        <tr><th>System / Resource</th><th>What will it use it for?</th><th>Access</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Code (Bitbucket)</td><td>Locates where the error is and prepares a fix proposal.</td><td><span class="badge r">Read</span> <span class="badge rw">Propose - with our approval</span></td></tr>
+        <tr><td>Jira</td><td>Reads incoming requests and error tickets; comments when needed.</td><td><span class="badge r">Read</span> <span class="badge rw">Comment</span></td></tr>
+        <tr><td>Data catalog (OpenMetadata)</td><td>Answers the question "Which tables does this report come from?".</td><td><span class="badge r">Read-only</span></td></tr>
+        <tr><td>Test / dev databases</td><td>Validates queries and checks data quality.</td><td><span class="badge r">Read-only</span></td></tr>
+        <tr><td>Error tickets and logs</td><td>Catches and investigates errors before we even notice them.</td><td><span class="badge r">Read-only</span></td></tr>
+        <tr><td>Test / dev servers</td><td>Checks service status and performs approved deployments.</td><td><span class="badge rw">Temporary credentials · logged · approved</span></td></tr>
+        <tr><td>Production (prod) environment</td><td>-</td><td><span class="badge no">NO CONNECTION IN THE FIRST PHASE</span></td></tr>
+        <tr><td>Personal / customer data</td><td>-</td><td><span class="badge no">OUT OF SCOPE - the system works with data structure, not data content</span></td></tr>
+      </tbody>
+    </table>
+    <p class="perm-note">
+      <b>Additional safeguards:</b> The system never stores a permanent password anywhere; it obtains access with short-lived temporary credentials every time.
+      There is not a single open door into the servers from the outside. Everything it learns is kept in a versioned repository and
+      can be reverted at any moment.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 08 · ROADMAP ============ -->
+<section id="roadmap">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">08 - ROADMAP</div>
+      <h2>We move step by step; every phase has a measurable output.</h2>
+    </div>
+    <div class="phases">
+      <div class="phase done">
+        <span class="ph-tag">Phase 1 · Completed</span>
+        <h4>Brain skeleton in place</h4>
+        <p>Memory layout, security rules, the safety and verification gates, and the test design are all in place. Everything is logged and auditable.</p>
+        <span class="ph-out">Output: auditable foundation - done</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Phase 2</span>
+        <h4>Local operation and baseline measurement</h4>
+        <p>We get the system running locally. The first methods will be written and a baseline test score will be taken.</p>
+        <span class="ph-out">Output: working system + measured baseline</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Phase 3</span>
+        <h4>Always-on operation (cloud R&D environment)</h4>
+        <p>The system will move to an isolated server provisioned by the cloud team. It will become reachable via Teams at any time and start listening for events.</p>
+        <span class="ph-out">Output: 24/7 reachable system</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Phase 4</span>
+        <h4>Server access and end-to-end deployment</h4>
+        <p>Temporary-credential access to the target servers will be set up. The approved deployment flow will be exercised end to end in the test environment.</p>
+        <span class="ph-out">Output: approved deployment flow - in the test environment</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Phase 5</span>
+        <h4>Automated error diagnosis</h4>
+        <p>The system will connect to the error-monitoring service on a separate server. Error catching, root-cause analysis and fix-proposal flow will be automated. No connection to production will be established.</p>
+        <span class="ph-out">Output: the "03:07 AM" scenario live</span>
+      </div>
+      <div class="phase">
+        <span class="ph-tag">Phase 6</span>
+        <h4>Self-sustaining system</h4>
+        <p>A scheduled job set will go live: nightly data-quality checks, error sweeps, a daily learning report and weekly test runs. Model tiering will be added to reduce cost.</p>
+        <span class="ph-out">Output: a full loop that learns, measures and reports</span>
+      </div>
+    </div>
+    <div class="roadmap-note">
+      <b>Pace:</b> At the end of the first two months we will have a working demo and baseline scores.
+      Since every phase has a measurable output, a stop-or-continue decision on the investment can be made at any point.
+      We carry no "all or nothing" risk.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 · GAINS ============ -->
+<section id="gains">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">09 - GAINS</div>
+      <h2>What will we get?</h2>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="big"><span data-count="90" data-prefix="−" data-suffix="%">−90%</span></div>
+        <div class="cmp">nightly error response time</div>
+        <p>Overnight errors are resolved in the morning with a single approval. The team focuses on the decision, not the toil.</p>
+      </div>
+      <div class="kpi">
+        <div class="big"><span data-count="10" data-prefix="×" data-suffix="">×10</span></div>
+        <div class="cmp">report and development speed</div>
+        <p>Search and discovery time comes from memory. Every new job finishes faster than the last.</p>
+      </div>
+      <div class="kpi">
+        <div class="big">0%</div>
+        <div class="cmp">knowledge loss on staff turnover</div>
+        <p>Institutional memory lives in the repository. Continuity holds through leave, departures and new hires.</p>
+      </div>
+      <div class="kpi">
+        <div class="big">↑<span class="suffix">weekly</span></div>
+        <div class="cmp">measurable improvement</div>
+        <p>Improvement is proven with a weekly test score. Any regression is caught immediately and reverted.</p>
+      </div>
+    </div>
+    <div class="dev-block">
+      <h3>What changes on the development side?</h3>
+      <p class="dev-cap">
+        A data developer's job is not just writing code; from understanding the schema to release,
+        <strong>five distinct steps</strong> stack on top of each other. The system now carries the entire chain;
+        the human is left with the initial specification and the final review:
+      </p>
+      <div class="dev-steps">
+        <div class="dstep">
+          <div class="ds-t">Schema review</div>
+          <div class="ds-row"><span class="was">half a day</span><span class="now2">minutes</span></div>
+          <div class="ds-d">The system reads the source structure and <b>derives the mapping points itself.</b> The team's naming and formatting rules are applied automatically.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Code writing</div>
+          <div class="ds-row"><span class="was">1 day</span><span class="now2">minutes</span></div>
+          <div class="ds-d">The system models itself on <b>similar pipelines the team has written before.</b> The output is code in the team's own style and standards, not a foreign voice.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Testing</div>
+          <div class="ds-row"><span class="was">half a day</span><span class="now2">automatic</span></div>
+          <div class="ds-d">Existing tests run; if coverage is lacking, the system <b>writes the missing test itself</b> and pushes it through the verification gate. Any red means no release.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Documentation</div>
+          <div class="ds-row"><span class="was">half a day</span><span class="now2">instant</span></div>
+          <div class="ds-d">Today the most neglected step. For the system it is <b>free:</b> up-to-date docs and a change summary are generated automatically alongside the code.</div>
+        </div>
+        <div class="dstep">
+          <div class="ds-t">Release</div>
+          <div class="ds-row"><span class="was">coordination</span><span class="now2">approved</span></div>
+          <div class="ds-d">The deployment proposal arrives ready. The team says <b>"approve"</b>; the system deploys, verifies and reports the result. The rollback path is always clear.</div>
+        </div>
+      </div>
+      <div class="dev-total">
+        <div class="dt-lbl"><b>Onboarding a new source table</b> — total team effort:</div>
+        <div class="dt-nums">
+          <span class="dt-old">2-3 days</span>
+          <span class="dt-arrow">→</span>
+          <span class="dt-new">2-3 hours</span>
+        </div>
+      </div>
+      <div class="dev-gains">
+        <div class="dg"><div class="dg-i">🔁</div><p><b>Every new similar job gets even shorter.</b>The system saves the pipeline it just wrote as a method. By the third table the time halves; by the tenth it is routine.</p></div>
+        <div class="dg"><div class="dg-i">📋</div><p><b>Review quality improves.</b>The developer is busy evaluating the right solution, not writing code. Comments shift from style to substance.</p></div>
+        <div class="dg"><div class="dg-i">🎓</div><p><b>New developers become productive fast.</b>The team's accumulated knowledge is in the repository. Answering the system's questions turns months of discovery into weeks.</p></div>
+        <div class="dg"><div class="dg-i">🧪</div><p><b>Test discipline never slips.</b>The verification gate enforces code quality, type safety, tests and security scans on every change. Even rushed work must pass the gate.</p></div>
+        <div class="dg"><div class="dg-i">📚</div><p><b>Documentation never goes stale.</b>Docs are generated and updated together with the code. The "docs are outdated" excuse becomes history.</p></div>
+        <div class="dg"><div class="dg-i">🛠️</div><p><b>Maintenance burden lightens.</b>The system also recognizes problems in the pipelines it wrote itself. When it sees a similar error, it first checks its own fix history.</p></div>
+      </div>
+    </div>
+
+    <div class="gain-list">
+      <div class="gain"><div class="i">⏱️</div><p><b>Operational load drops.</b>Night and weekend errors, routine quality checks and first-level diagnosis are now the system's job.</p></div>
+      <div class="gain"><div class="i">🎯</div><p><b>The team shifts to value-creating work.</b>The system does the routine; the team focuses on architecture, quality and new business value.</p></div>
+      <div class="gain"><div class="i">📐</div><p><b>Standards are enforced automatically.</b>The verification gate enforces the team's quality rules on every single change.</p></div>
+      <div class="gain"><div class="i">🔍</div><p><b>Everything is auditable.</b>Every learning is logged, every command passes the safety gate, every deployment is approved. Rollback is always possible.</p></div>
+      <div class="gain"><div class="i">🧩</div><p><b>Model independence.</b>The intelligence model is a replaceable part; the accumulation stays with us. No vendor lock-in.</p></div>
+      <div class="gain"><div class="i">🚀</div><p><b>R&D cost is low.</b>We are writing a thin layer on a proven skeleton. A small team iterates fast and maintenance stays light.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · WHY NOW ============ -->
+<section id="why-now">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">10 - WHY NOW</div>
+      <h2>This window will not stay open forever.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why">
+        <div class="wn">01 · MODEL WAVE</div>
+        <h4>Models get stronger every quarter. Those with a brain surf the wave.</h4>
+        <p>When a new model ships, memoryless users start from scratch all over again.
+        <b>Those with a ready brain put the new model to work on day one.</b>
+        A model upgrade is not a risk for us; it is a free promotion.</p>
+      </div>
+      <div class="why">
+        <div class="wn">02 · COMPETITION</div>
+        <h4>Everyone can buy the same model. No one can buy your two years of experience.</h4>
+        <p>Institutional memory is <b>an advantage that cannot be copied.</b> This curve grows exponentially for whoever starts early.
+        A late-starting rival can never catch up, because learning time cannot be bought with money.</p>
+      </div>
+      <div class="why">
+        <div class="wn">03 · READY FOUNDATION</div>
+        <h4>Half the building is done. We are investing in the next floor, not in the risk.</h4>
+        <p>The base approach is already proven inside the organization: systems are visible, work is speeding up.
+        This effort amounts to adding <b>a thin brain layer</b> on top.
+        Small team, fast iteration, measurable output.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section class="closing">
+  <div class="wrap">
+    <div class="sec-num">CLOSING</div>
+    <h2>The question is not "can we do it".<br><em>It is "who does it first?"</em></h2>
+    <p class="sec-lede">
+      This is not a tool investment; it is <strong>an institutional-memory investment.</strong>
+      Tools age and models change; what the team has learned remains.
+      With MrRobot, every night, every error and every report becomes a departmental asset that compounds like interest.
+    </p>
+    <div class="close-cards">
+      <div class="close-card">
+        <div class="ck">Foundation</div>
+        <p>The brain skeleton is ready.</p>
+        <span>Phase 1 completed; everything is logged and auditable.</span>
+      </div>
+      <div class="close-card">
+        <div class="ck">First Demo</div>
+        <p>Within two months.</p>
+        <span>We will have a working system and baseline scores in hand.</span>
+      </div>
+      <div class="close-card">
+        <div class="ck">Proof</div>
+        <p>Measured every week.</p>
+        <span>Reported with an improvement score; we present data, not claims.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>MrRobot · Data Analytics R&D · 2026 - <span class="mono">"Knowledge belongs to the team, not to an individual."</span></p>
+    <p class="mono">brain = versioned repository · every learning is a record</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function finalize(el){
+    var p=el.dataset.prefix||'', s=el.dataset.suffix||'', d=el.dataset.dec?parseInt(el.dataset.dec,10):0;
+    el.textContent=p+(parseFloat(el.dataset.count)).toFixed(d)+s;
+  }
+  function animate(el){
+    var target=parseFloat(el.dataset.count), dur=1200, t0=null;
+    var p=el.dataset.prefix||'', s=el.dataset.suffix||'', d=el.dataset.dec?parseInt(el.dataset.dec,10):0;
+    function step(t){
+      if(t0===null)t0=t;
+      var prog=Math.min((t-t0)/dur,1), ease=1-Math.pow(1-prog,3);
+      el.textContent=p+(target*ease).toFixed(d)+s;
+      if(prog<1)requestAnimationFrame(step); else el.textContent=p+target.toFixed(d)+s;
+    }
+    requestAnimationFrame(step);
+  }
+  var els=document.querySelectorAll('[data-count]');
+  if(reduce||!('IntersectionObserver' in window)){
+    els.forEach(finalize); return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ animate(e.target); io.unobserve(e.target); }
+    });
+  },{threshold:.4});
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

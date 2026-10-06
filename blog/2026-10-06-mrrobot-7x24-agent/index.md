@@ -136,4 +136,4 @@ Tekerleği yeniden icat etmiyoruz: agent harness'ın ~%80'i hazır (Hermes). Biz
 
 Sistem henüz yolun başında. Ama hedef net: rutin işleri bütünüyle devralan, her görevde biraz daha kıdem kazanan, geceleri de nöbette olan bir ekip üyesi. Süreç adım adım ilerliyor; her fazın ölçülebilir bir çıktısı var.
 
-Bu yazıdaki sistemin detaylı mimarisi ve karar günlüğü projenin `PLAN.md` dosyasında; sorunuz olursa yorumlarda veya [LinkedIn](https://linkedin.com/in/metin-karakus-b586b6132) üzerinden ulaşabilirsiniz.
+Bu yazıdaki sistemin detaylı mimarisi ve karar günlüğü projenin `PLAN.md` dosyasında. Yönetim özetini de ekledik: [One-Pager (TR)](/blog/mrrobot-onepager-tr) · [One-Pager (EN)](/blog/mrrobot-onepager-en) · [English version of this post](/blog/mrrobot-24-7-autonomous-agent). Sorunuz olursa yorumlarda veya [LinkedIn](https://linkedin.com/in/metin-karakus-b586b6132) üzerinden ulaşabilirsiniz.
