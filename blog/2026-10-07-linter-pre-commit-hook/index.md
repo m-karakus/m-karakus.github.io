@@ -112,4 +112,5 @@ Birkaç pratik not:
 
 :::info 📌 Bu blog'daki ilgili yazılar:
 - **[MrRobot — 7x24 Çalışan ve Kendini Geliştiren Bir AI Agent](/blog/mrrobot-7x24-otonom-agent)** — AI destekli geliştirme akışında otomatik kalite kapılarının büyük hali.
+- **[🇬🇧 English version](/blog/linter-pre-commit-hook)** — aynı yazının İngilizcesi.
 :::
