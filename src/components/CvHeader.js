@@ -29,7 +29,7 @@ export default function CvHeader() {
               <span className={styles.label}>Phone:</span> +90 505 990 93 71
             </a>
             <a className={styles.link} href="https://maps.app.goo.gl/MnYP2sTU4BchhpvF6" target="_blank" rel="noopener noreferrer">
-              <span className={styles.label}>Location:</span> Istanbul, Turkey
+              <span className={styles.label}>Location:</span> Tekirdağ/Çorlu, Turkey
             </a>
           </div>
           <div className={styles.divider} />
